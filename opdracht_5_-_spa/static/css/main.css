@@ -1,0 +1,54 @@
+body > *, body, html {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden; /* to prevent problems with overflow content */
+}
+
+body {
+    background-color: rgb(250, 250, 250);
+}
+
+body > * {
+    margin: 0 1rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    width: calc(100vw - 2rem);
+    background-color: white;
+}
+
+nav a {
+    text-decoration: none;
+    height: 3rem;
+    display: block;
+    line-height: 3rem;
+    text-align: center;
+    border-bottom: 1px solid rgb(150, 150, 150); 
+    color: rgb(70, 70, 70);
+}
+
+nav li:not(:first-child) a {
+    border-bottom: none;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+h2 {
+    font-size: 2rem;
+    height: 2rem;
+    text-align: center;
+    font-family: 'Josefin Slab', serif;
+    border-bottom: 2px solid rgb(150, 150, 150);
+    margin-bottom: 1rem;
+    padding: 1rem;
+
+}
+
+
+
+
+
+
+
