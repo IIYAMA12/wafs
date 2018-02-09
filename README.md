@@ -53,4 +53,8 @@ The course repo for 'Web App From Scratch'
 [Bron: Single-page vs multiple-page application](https://medium.com/@NeotericEU/single-page-application-vs-multiple-page-application-2591588efe58)
 
 ## Best practices
-... ???
+
+
+[Web app from scratch](https://iiyama12.github.io/wafs/);
+[Experiment prototype](https://iiyama12.github.io/wafs/experimental_examples/prototype);
+[Experiment classes and proxy](https://iiyama12.github.io/wafs/experimental_examples/classes_and_proxy);
