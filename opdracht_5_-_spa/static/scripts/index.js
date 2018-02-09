@@ -10,9 +10,9 @@
 
 
                 // navigate directly when visiting the page without the navigation. Else it might get bugged, because the hash isn't triggered when it is the same url.
-                let sectionName = window.location.href.split('#')[1];
-                if (sectionName != undefined) {
-                    app.sections.toggle(sectionName);
+                let initialSectionName = window.location.href.split('#')[1];
+                if (initialSectionName != undefined) {
+                    app.sections.toggle(initialSectionName);
                 }
 
                 /*
