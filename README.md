@@ -194,5 +194,9 @@ The next step is to detect if the URL hash has been changed. We can use the even
 * [Experiment prototype](https://iiyama12.github.io/wafs/experimental_examples/prototype)
 * [Experiment classes and proxy](https://iiyama12.github.io/wafs/experimental_examples/classes_and_proxy)
 
-## Code review issues
-* [By VincentKempers](https://github.com/VincentKempers/wafs/issues/7)
+## Code review
+
+### Reviews of:
+* [VincentKempers](https://github.com/VincentKempers/wafs/issues/7)
+
+### Reviews by:
