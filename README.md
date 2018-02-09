@@ -54,6 +54,8 @@ The course repo for 'Web App From Scratch'
 
 ## Best practices
 
+// todo //
+
 ## Web app
 
 ### Building up the html
@@ -151,11 +153,11 @@ And for our excitement, lets start it up!
 
 #### Hash change detection
 
-The next step is to detect if the URL hash has been changed. We can use the event hashchange for that.
+The next step is to detect if the URL hash has been changed. We can use the event `hashchange` for that.
 
 ##### Hash change example:
 * URL: index.html
-* URL: index.html#changed < hash has been changed
+* URL: index.html#changed
 
 
 ```js
@@ -191,3 +193,6 @@ The next step is to detect if the URL hash has been changed. We can use the even
 ## Experiment examples
 * [Experiment prototype](https://iiyama12.github.io/wafs/experimental_examples/prototype)
 * [Experiment classes and proxy](https://iiyama12.github.io/wafs/experimental_examples/classes_and_proxy)
+
+## Code review issues
+* [By VincentKempers](https://github.com/VincentKempers/wafs/issues/7)
