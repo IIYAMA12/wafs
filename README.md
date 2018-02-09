@@ -127,7 +127,7 @@ The next step is to write the app object. As it is the `APP` I prefer to write e
 Now lets add the MAIN things we can do with the app or what the app should do by itself.
 And for our excitement, lets start it up!
 
-```JavaScript
+```js
 (function () {
     let app;
 
@@ -154,11 +154,11 @@ And for our excitement, lets start it up!
 The next step is to detect if the URL hash has been changed. We can use the event hashchange for that.
 
 ##### Hash change example:
-URL: index.html
-URL: index.html#changed < hash has been changed
+* URL: index.html
+* URL: index.html#changed < hash has been changed
 
 
-```JavaScript
+```js
 
     (function () {
         let app;
