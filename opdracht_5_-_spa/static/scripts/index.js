@@ -1,22 +1,26 @@
 (function () {
     let app;
-    
+
     app = {
         init : function () {
-            console.log("app has been started");
-            /*
-                MDN web docs: "The hashchange event is fired when the fragment identifier of the URL has changed (the part of the URL that follows the # symbol, including the # symbol)."
-                https://developer.mozilla.org/en-US/docs/Web/Events/hashchange
-            */
             this.routes.init();
         },
         routes : {
             init : function () {
+
+
+                // navigate directly when visiting the page without the navigation. Else it might get bugged, because the hash isn't triggered when it is the same url.
+                let sectionName = window.location.href.split('#')[1];
+                if (sectionName != undefined) {
+                    app.sections.toggle(sectionName);
+                }
+
+                /*
+                    MDN web docs: "The hashchange event is fired when the fragment identifier of the URL has changed (the part of the URL that follows the # symbol, including the # symbol)."
+                    https://developer.mozilla.org/en-US/docs/Web/Events/hashchange
+                */
                 window.addEventListener("hashchange", function (e) {
-                    // console.log(e.oldURL, e.newURL);
-                    
                     let sectionName = e.newURL.split('#')[1];
-                    
                     app.sections.toggle(sectionName);
                 });
             },
@@ -27,7 +31,7 @@
 
                 const sectionData = this.data[route];
                 if (sectionData != undefined) {
-                    
+
                     var sectionID = sectionData.id;
 
                     // show the right section
@@ -55,7 +59,3 @@
 
     app.init();
 })();
-
-
-
-
