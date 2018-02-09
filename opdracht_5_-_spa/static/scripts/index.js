@@ -27,7 +27,6 @@
         },
         sections : {
             toggle : function (route) {
-                console.log("route:", route);
 
                 const sectionData = this.data[route];
                 if (sectionData != undefined) {

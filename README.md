@@ -54,7 +54,140 @@ The course repo for 'Web App From Scratch'
 
 ## Best practices
 
+## Web app
 
-[Web app from scratch](https://iiyama12.github.io/wafs/);
-[Experiment prototype](https://iiyama12.github.io/wafs/experimental_examples/prototype);
-[Experiment classes and proxy](https://iiyama12.github.io/wafs/experimental_examples/classes_and_proxy);
+### Building up the html
+
+At the start of the single page app, you create all your `pages` wrapper elements. In this example I used for the pages 1 navigation and 2 section elements.
+
+```HTML
+<nav id="main-nav">
+    <h2>Navigation</h2>
+    <ul>
+        <li><a href="#startscreen">Startscreen</a></li>
+        <li><a href="#bestPractices">Best practices</a></li>
+    </ul>
+</nav>
+<section id="startscreen" class="hidden">
+    <h2>Startscreen</h2>
+    <a href="#navigation">Navigation</a>
+</section>
+<section id="best-practices" class="hidden">
+    <h2>Best practices</h2>
+    <a href="#navigation">Navigation</a>
+</section>
+```
+### Basic css required
+
+It is very important to make the body, html and as well as the pages full screen and disable the overflow. Especially if you design the app for all browsers, disabling the overflow for all those elements is very important.
+
+```CSS
+body > *, body, html {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden; /* to prevent problems with overflow content */
+}
+```
+To hide pages, a class might be handy.
+* `display` with the value `none` is used to remove the bounding-box
+* `visibility` is used to stop rendering.
+
+```CSS
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+```
+
+### JavaScript
+
+Around all the code is a IIFE used to reduce the function scope length. It will make sure that it is less likely for code outside of the IIFE is able to interact with it.
+A `IIFE` is a function which is wrapped around other code. After loading the code inside, it will call it self to execute it.
+
+```JavaScript
+(function () {
+    // IIFE
+})();
+```
+
+
+The next step is to write the app object. As it is the `APP`, I prefer to write everything which is related to it inside of it.
+
+```JavaScript
+(function () {
+    let app;
+
+    app = {
+        //
+    }
+})();
+```
+
+#### Add the MAIN things our app can do!
+Now lets add the MAIN things we can do with the app or what the app should do by itself.
+And for our excitement, lets start it up!
+
+```JavaScript
+(function () {
+    let app;
+
+    app = {
+        init : function () {
+            // We should call this function when the app has been loaded
+            console.log("We have been started!");
+        },
+        routes : {
+            // Lets handle our routes. (with the URL of course)
+        },
+        sections : {
+            // Manage the pages
+        }
+    }
+
+    // Get ready! We are going to start it when the app object has been initialized!
+    app.init();
+})();
+```
+
+#### Hash change detection
+
+The next step is to detect if the URL hash has been changed. We can use the event hashchange for that.
+
+##### Hash change example:
+URL: index.html
+URL: index.html#changed < hash has been changed
+
+
+```JavaScript
+
+    (function () {
+        let app;
+
+        app = {
+            init : function () {
+                // Let when the page has been loaded, lets set up our routes management.
+                this.routes.init();
+            },
+            routes : {
+                // Adding an addEventListener to check if the URL hash has been changed.
+                window.addEventListener("hashchange", function (e) {
+                    console.log("URL hash has been changed! And the new URL is:", e.newURL)
+                });
+            },
+            sections : {
+                // Manage the pages
+            }
+        }
+
+        // Get ready! We are going to start it when the app object has been initialized!
+        app.init();
+    })();
+```
+
+
+
+[Web app from scratch](https://iiyama12.github.io/wafs/)
+
+## Experiment examples
+* [Experiment prototype](https://iiyama12.github.io/wafs/experimental_examples/prototype)
+* [Experiment classes and proxy](https://iiyama12.github.io/wafs/experimental_examples/classes_and_proxy)
