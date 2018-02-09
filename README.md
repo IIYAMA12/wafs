@@ -111,7 +111,7 @@ A `IIFE` is a function which is wrapped around other code. After loading the cod
 ```
 
 
-The next step is to write the app object. As it is the `APP`, I prefer to write everything which is related to it inside of it.
+The next step is to write the app object. As it is the `APP` I prefer to write everything which is related to it inside of it.
 
 ```JavaScript
 (function () {
