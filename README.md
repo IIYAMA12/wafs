@@ -198,6 +198,8 @@ The next step is to detect if the URL hash has been changed. We can use the even
 
 ### Reviews of:
 * [VincentKempers](https://github.com/VincentKempers/wafs/issues/7)
+* [Kevin Wang](https://github.com/kyunwang/wafs/issues/1)
 
 ### Reviews by:
 * [VincentKempers](https://github.com/IIYAMA12/wafs/issues/1)
+* [Kevin Wang](https://github.com/IIYAMA12/wafs/pull/2)
