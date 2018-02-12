@@ -8,14 +8,16 @@
     <link rel="stylesheet" href="static/css/reset.css">
     <link rel="stylesheet" href="static/css/main.css">
     <link rel="stylesheet" href="static/css/navigation.css">
-    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:700" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:700" rel="stylesheet">
 </head>
 <body>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <nav id="main-nav">
         <h2>Navigation</h2>
         <ul>
             <li><a href="#startscreen">Startscreen</a></li>
             <li><a href="#best-practices">Best practices</a></li>
+            <li><a href="#api-nasa-gov">API NASA</a></li>
         </ul>
     </nav>
     <section id="startscreen" class="hidden">
@@ -26,7 +28,18 @@
         <h2>Best practices</h2>
         <a href="#main-nav">Navigation</a>
     </section>
+    <section id="api-nasa-gov" class="hidden">
+        <h2>API NASA</h2>
+        <svg viewbox="-500 -500 1000 1000">
+            <circle cx="0" cy="0"  r="40" fill="blue"></circle>
+            <g></g>
+        </svg>
+        <a href="#main-nav">Navigation</a>
+    </section>
 
+    <script src="static/scripts/template-engine.js"></script>
+    <script src="static/scripts/nasa-datavis.js"></script>
     <script src="static/scripts/index.js"></script>
+
 </body>
 </html>
