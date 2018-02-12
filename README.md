@@ -200,3 +200,4 @@ The next step is to detect if the URL hash has been changed. We can use the even
 * [VincentKempers](https://github.com/VincentKempers/wafs/issues/7)
 
 ### Reviews by:
+* [VincentKempers](https://github.com/IIYAMA12/wafs/issues/1)
