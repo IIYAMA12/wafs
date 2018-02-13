@@ -84,7 +84,7 @@ const app = (function () {
 
                             app.JSONHttpRequest.open(request, "GET", "https://api.nasa.gov/neo/rest/v1/feed?api_key=1NnMgn9RYxKvz0o2FDqdQ3poB6vtGreh8oLahlBy", true);
                             app.JSONHttpRequest.send(request);
-                            console.log(request.status);
+
 
                             request.customData.callBack = datavisComponent.load;
                         },
@@ -96,63 +96,49 @@ const app = (function () {
                     httpRequestsById: {},
                     template: [
                         {
-                            query: "h2",
+                            query: "> h2",
                             content: "API NASA (template test)",
                             type: "text",
-                            children: [
-                            ]
                         },
                         {
-                            query: "",
-                            queryAfter: "section",
                             content: "section",
                             type: "tag",
                             children: [
                                 {
-                                    query: "",
-                                    queryAfter: "h4",
                                     content: "h4",
                                     type: "tag",
                                     children: [
                                         {
-                                            query: "",
                                             content: "h4",
                                             type: "text"
                                         },
                                     ]
                                 },
                                 {
-                                    query: "",
-                                    queryAfter: "p",
                                     content: "p",
                                     type: "tag",
                                     children: [
                                         {
-                                            query: "",
                                             content: "p",
                                             type: "text"
                                         },
                                     ]
                                 },
                                 {
-                                    query: "",
                                     content: "h4",
                                     type: "tag",
                                     children: [
                                         {
-                                            query: "",
                                             content: "h4",
                                             type: "text"
                                         },
                                     ]
                                 },
                                 {
-                                    query: "",
                                     content: "p",
                                     type: "tag",
                                     children: [
                                         {
-                                            query: "",
                                             content: "p",
                                             type: "text"
                                         },
@@ -161,14 +147,26 @@ const app = (function () {
                             ]
                         },
                         {
-                            query: "",
+                            content: "p",
+                            type: "tag",
+                            children: [
+                                {
+                                    content: "p test",
+                                    type: "text"
+                                },
+                            ]
+                        },
+                        {
                             content: function () {
-                                const headersArray = ["test1", "test2"];
-                                let headerString = "";
-                                for (var i = 0; i < headersArray.length; i++) {
-                                    headerString += headersArray[i];
+                                const headerText = ["test1", "test2"];
+                                const elements = [];
+
+                                for (let i = 0; i < headerText.length; i++) {
+                                    let element = document.createElement("h2");
+                                    element.textContent = headerText[i];
+                                    elements[elements.length] = element
                                 }
-                                return headerString;
+                                return elements;
                             },
                             type: "function",
                         }
@@ -247,7 +245,9 @@ const app = (function () {
                             // console.table(asteroid);
                         }
                     }
-                    source.customData.callBack(nearEarthObjects);
+                    if (source.customData.callBack != undefined) {
+                        source.customData.callBack(nearEarthObjects);
+                    }
                 }
             },
             error: function (e){
