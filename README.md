@@ -190,6 +190,15 @@ The next step is to detect if the URL hash has been changed. We can use the even
 
 [Web app from scratch](https://iiyama12.github.io/wafs/)
 
+```CSS
+/*
+    NEW NEW NEW NEW NEW NEW
+    NEW NEW NEW NEW NEW NEW
+    NEW NEW NEW NEW NEW NEW
+    NEW NEW NEW NEW NEW NEW
+    NEW NEW NEW NEW NEW NEW
+*/
+```
 [Template engine documentation](https://iiyama12.github.io/wafs/template-engine-doc)
 
 ## Experiment examples

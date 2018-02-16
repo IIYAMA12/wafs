@@ -193,7 +193,7 @@ let globalData = ["item:1", "item:2", "item:3"];
 (example untested)
 
 
-### Passing data to a text child.
+### Passing data to a text child
 If you want to pass data to an element, then you have to send an object which contains the element as well as the data you want to pass.
 
 ```JS
@@ -272,6 +272,7 @@ Once data has been send to the first layer of children. The data will be passed 
 
 ```HTML
 <ul>
+    <li><p>p</p></li>
     <li><p>p</p></li>
     <li><p>p</p></li>
     <li><p>p</p></li>
