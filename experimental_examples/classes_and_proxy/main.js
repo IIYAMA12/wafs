@@ -112,7 +112,7 @@ console.log(newProxy.somethingElse); // false
 
 // -------------------------------------------- //
 
-// revoke a proxy
+// Make a revoke able proxy
 
 var newRevocableProxy = Proxy.revocable(proxyTestObject, {
     get : function (target, name) {
@@ -121,7 +121,7 @@ var newRevocableProxy = Proxy.revocable(proxyTestObject, {
 });
 
 
-newRevocableProxy.revoke(); // disable the Proxy by the handler
+newRevocableProxy.revoke(); // disable the Proxy
 /*
     TypeError: illegal operation attempted on a revoked proxy debugger eval
 */
