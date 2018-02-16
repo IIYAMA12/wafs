@@ -1,6 +1,8 @@
 # wafs
 The course repo for 'Web App From Scratch'
 
+[Web app from scratch](https://iiyama12.github.io/wafs/app)
+
 ## Advantages and disadvantages of JavaScript libraries/frameworks (lang NL)
 
 ### Voordeel
