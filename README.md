@@ -190,6 +190,8 @@ The next step is to detect if the URL hash has been changed. We can use the even
 
 [Web app from scratch](https://iiyama12.github.io/wafs/)
 
+[Template engine documentation](https://iiyama12.github.io/wafs/template-engine-doc)
+
 ## Experiment examples
 * [Experiment prototype](https://iiyama12.github.io/wafs/experimental_examples/prototype)
 * [Experiment classes and proxy](https://iiyama12.github.io/wafs/experimental_examples/classes_and_proxy)
