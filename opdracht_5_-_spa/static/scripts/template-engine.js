@@ -19,7 +19,7 @@ const templateEngine = (function () {
                 switch(type) {
                     case "function": // Let a custom function handle how the elements are created.
                         return (function () {
-                            const elementsOrDataWithElement = content(data);
+                            const elementsOrDataWithElement = content(data, parent);
                             // todo retrieve data //
                             if (elementsOrDataWithElement != undefined && elementsOrDataWithElement.length > 0) {
                                 const elementsWithData = [];

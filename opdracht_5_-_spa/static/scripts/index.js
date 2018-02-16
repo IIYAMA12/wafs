@@ -130,6 +130,7 @@ const app = (function () {
                         function (_, sectionData) {
                             const template = app.sections.template.get("nasa");
                             templateEngine.process(template, document.getElementById("api-nasa-gov"));
+
                         }
                     ],
                     httpRequestsById: {}

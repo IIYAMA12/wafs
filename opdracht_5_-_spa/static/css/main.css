@@ -1,7 +1,7 @@
 body > *, body, html {
     min-height: 100vh;
     width: 100vw;
-    overflow: hidden; /* to prevent problems with overflow content */
+    overflow-x: hidden; /* to prevent problems with overflow content */
 }
 
 body {

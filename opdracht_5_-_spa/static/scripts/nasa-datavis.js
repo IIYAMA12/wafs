@@ -7,75 +7,114 @@ const datavisComponent = (function (datavisCanvas) {
         svgHeight = canvastSize;
 
     let elementData;
-    const rowsIndex = [
-        ["absolute_magnitude_h"],
-        ["estimated_diameter", "feet", "estimated_diameter_max"],
-        ["estimated_diameter", "kilometers", "estimated_diameter_max"],
-        ["estimated_diameter", "meters", "estimated_diameter_max"],
-        ["estimated_diameter", "miles", "estimated_diameter_max"],
-        ["is_potentially_hazardous_asteroid"],
-        ["close_approach_data", "close_approach_date"],
-        ["close_approach_data", "miss_distance", "astronomical"],
-        ["close_approach_data", "miss_distance", "kilometers"],
-        ["close_approach_data", "miss_distance", "lunar"],
-        ["close_approach_data", "miss_distance","miles"],
-        ["close_approach_data", "orbiting_body"],
-        ["close_approach_data", "relative_velocity", "kilometers_per_hour"],
-        ["close_approach_data", "relative_velocity", "kilometers_per_second"],
-        ["close_approach_data", "relative_velocity", "miles_per_hour"],
-        ["links"]
+    // const rowsIndex = [
+    //     ["absolute_magnitude_h"],
+    //     ["estimated_diameter", "feet", "estimated_diameter_max"],
+    //     ["estimated_diameter", "kilometers", "estimated_diameter_max"],
+    //     ["estimated_diameter", "meters", "estimated_diameter_max"],
+    //     ["estimated_diameter", "miles", "estimated_diameter_max"],
+    //     ["is_potentially_hazardous_asteroid"],
+    //     ["close_approach_data", "close_approach_date"],
+    //     ["close_approach_data", "miss_distance", "astronomical"],
+    //     ["close_approach_data", "miss_distance", "kilometers"],
+    //     ["close_approach_data", "miss_distance", "lunar"],
+    //     ["close_approach_data", "miss_distance","miles"],
+    //     ["close_approach_data", "orbiting_body"],
+    //     ["close_approach_data", "relative_velocity", "kilometers_per_hour"],
+    //     ["close_approach_data", "relative_velocity", "kilometers_per_second"],
+    //     ["close_approach_data", "relative_velocity", "miles_per_hour"],
+    //     ["links"]
+    // ];
+    const rowsData = [
+        {indexes:["absolute_magnitude_h"], header: "Absolute magnitude"},
+        {indexes:["estimated_diameter", "feet", "estimated_diameter_max"], header: "Feet (Estimated diameter)"},
+        {indexes:["estimated_diameter", "kilometers", "estimated_diameter_max"], header: "Kilometers (Estimated diameter)"},
+        {indexes:["estimated_diameter", "meters", "estimated_diameter_max"], header: "Meters (Estimated diameter)"},
+        {indexes:["estimated_diameter", "miles", "estimated_diameter_max"], header: "Miles (Estimated diameter)"},
+        {indexes:["is_potentially_hazardous_asteroid"], header: "Is potentially hazardous asteroid"},
+        {indexes:["close_approach_data", "close_approach_date"], header: "Close approach date"},
+        {indexes:["close_approach_data", "miss_distance", "astronomical"], header: "Astronomical (distance)"},
+        {indexes:["close_approach_data", "miss_distance", "kilometers"], header: "Kilometers (distance)"},
+        {indexes:["close_approach_data", "miss_distance", "lunar"], header: "Lunar (distance)"},
+        {indexes:["close_approach_data", "miss_distance","miles"], header: "Miles (distance)"},
+        {indexes:["close_approach_data", "orbiting_body"], header: "Orbiting body"},
+        {indexes:["close_approach_data", "relative_velocity", "kilometers_per_hour"], header: "Kilometers per hour (velocity)"},
+        {indexes:["close_approach_data", "relative_velocity", "kilometers_per_second"], header: "Kilometers per second (velocity)"},
+        {indexes:["close_approach_data", "relative_velocity", "miles_per_hour"], header: "Miles per hour (velocity)"},
+        {indexes:["links"], header: "Links"},
     ];
 
 
 
     const template = [
         {
-            content: function () {
+            query: "h3",
+            content: function (_, parent) {
                 const data = elementData;
-                const element = document.createElement("h3");
                 if (data != undefined && data != undefined) {
-                    // console.table(data);
+
                     const textNode = document.createTextNode(data.data.name);
-                    element.append(textNode);
+                    parent.textContent = "";
+                    parent.append(textNode);
                 }
 
-                return [{element: element, data: data}];
+                // return [{element: element, data: data}];
             },
             type: "function",
 
         },
         {
-            query: "table tbody tr:nth-child(2)",
+            query: "table tbody",
             content: function () {
                 const data = elementData;
                 if (data != undefined) {
 
                     const rowElements = [];
-                    for (let i = 0; i < rowsIndex.length; i++) {
-                        const tableData = document.createElement("td");
-                        const rowIndexes = rowsIndex[i];
-                        let textNodeText = data.data;
+                    for (let i = 0; i < rowsData.length; i++) {
+                        const tableRow = document.createElement("tr");
+                        const rowIndexes = rowsData[i].indexes;
+                        let value = data.data;
                         for (let j = 0; j < rowIndexes.length; j++) {
-                            if (textNodeText != undefined) {
-                                textNodeText = textNodeText[rowIndexes[j]];
+                            if (value != undefined) {
+                                value = value[rowIndexes[j]];
                                 // console.log(rowIndexes[j]);
                             } else {
-                                textNodeText = null;
+                                value = null;
                             }
                         }
 
-                        console.log(">>>", textNodeText);
-                        rowElements[rowElements.length] = {element: tableData, data: textNodeText};
+
+                        rowElements[rowElements.length] = {element: tableRow, data: {headerText: rowsData[i].header, value: value}};
                     }
                     console.table(rowElements.length, rowElements);
                     return rowElements;
                 }
             },
             type: "function",
-            child: {
-                content: "[use-data]",
-                type: "text",
-            }
+            children: [
+                {
+                    content: function (data) {
+                        const tableHeader = document.createElement("th");
+                        return [{element: tableHeader, data: data.headerText}];
+                    },
+                    type: "function",
+                    child: {
+                        content: "[use-data]",
+                        type: "text"
+                    }
+                },
+                {
+                    content: function (data) {
+                        const tableData = document.createElement("td");
+                        return [{element: tableData, data: data.value}];
+                    },
+                    type: "function",
+                    child: {
+                        content: "[use-data]",
+                        type: "text"
+                    }
+                }
+            ]
         },
     ];
 
