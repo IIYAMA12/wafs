@@ -211,6 +211,7 @@ The next step is to detect if the URL hash has been changed. We can use the even
 
 ## Experiment examples
 * [Experiment prototype](https://iiyama12.github.io/wafs/experimental_examples/prototype)
+* [Experiment promise](https://iiyama12.github.io/wafs/experimental_examples/promise)
 * [Experiment classes and proxy](https://iiyama12.github.io/wafs/experimental_examples/classes_and_proxy)
 
 ## Code review
