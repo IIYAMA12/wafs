@@ -187,7 +187,7 @@ const templateEngine = (function () {
 
                                             // All new instructions apply to new elements.
                                             const apply = templateEngine.apply; // << optimisation
-                                            console.log("data:", newElementWithData.data);
+
                                             for (let j = 0; j < instructionChildren.length; j++) {
                                                 apply(instructionChildren[j], newElement, newElementWithData.data);
                                             }
