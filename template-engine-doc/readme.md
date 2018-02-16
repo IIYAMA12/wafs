@@ -182,6 +182,7 @@ let globalData = ["item:1", "item:2", "item:3"];
 ]
 ```
 
+Result:
 ```HTML
 <ul>
     <li></li>
@@ -189,8 +190,6 @@ let globalData = ["item:1", "item:2", "item:3"];
     <li></li>
 </ul>
 ```
-
-(example untested)
 
 
 ### Passing data to a text child
@@ -230,6 +229,7 @@ let globalData = ["item:1", "item:2", "item:3"];
 ]
 ```
 
+Result:
 ```HTML
 <ul>
     <li>item:1</li>
@@ -238,7 +238,6 @@ let globalData = ["item:1", "item:2", "item:3"];
 </ul>
 ```
 
-(example untested)
 
 ### Inheritance
 Once data has been send to the first layer of children. The data will be passed automatic to the children of the children.
@@ -270,6 +269,7 @@ Once data has been send to the first layer of children. The data will be passed 
 ]
 ```
 
+Result:
 ```HTML
 <ul>
     <li><p>p</p></li>

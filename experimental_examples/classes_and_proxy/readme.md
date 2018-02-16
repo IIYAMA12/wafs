@@ -3,6 +3,10 @@
 
 
 ## Classes
+I haven't figured out the real benefit of using classes yet. They feel for the functionality I am aware of limited in some ways. This might be because I am probably not using methods that are taking benefits of classes. It through it was really annoying that a class can't have objects inside which can hold those functions. I tried to hack/build this, within `this` but I failed and yet succeeded. My first impression: I do not see/understand what makes them so special over default objects.
+
+[A post about why Classes](https://stackoverflow.com/questions/30783217/why-should-i-use-es6-classes)
+
 ```JS
 class Position {
     constructor(x, y, z) {
@@ -87,6 +91,9 @@ makeTeleportation.flyTo(-100, -100, -100);
 
 ## Proxy
 
+A proxy is an object that has the ability to detect when you are indexing in it to set / get (etc.) data. At that moment you can do your own custom behaviours.
+
+
 
 ```JS
 // proxy / Meta programming
@@ -115,15 +122,15 @@ console.log(newProxy.somethingElse); // false
 ```
 
 
-### Revoke a proxy
+### Revoke able proxy
+You are able to stop a proxy in order to debug if processes/your scripts are doing things that they shouldn't be doing.
 
 ```JS
-// revoke a proxy
-
 var proxyTestObject = {
     testKey : "value"
 };
 
+// Make revoke able proxy
 var newRevocableProxy = Proxy.revocable(proxyTestObject, {
     get : function (target, name) {
         return true;
@@ -131,16 +138,21 @@ var newRevocableProxy = Proxy.revocable(proxyTestObject, {
 });
 ```
 
+
+Before we revoke it:
 ```JS
 console.log(newRevocableProxy.test); // true
 
 ```
 
+
+Revoke the proxy:
 ```JS
 newRevocableProxy.revoke(); // disable the Proxy by the handler
 
 ```
 
+After we revoke it:
 ```JS
 console.log(newRevocableProxy.test);
 /*
