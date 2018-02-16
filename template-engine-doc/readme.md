@@ -278,12 +278,13 @@ Once data has been send to the first layer of children. The data will be passed 
 </ul>
 ```
 
-### Receive data in to a function
+### Receive data and parent in to a function
 When data is add by a parent, a child with the type `function` can receive the data at it's first parameter.
 
 ```JS
-content: function (data) {
+content: function (data, parent) {
     console.dir(data); // data can be found here!
+    console.dir(parent); // parent can be found here!
 },
 ```
 
@@ -293,7 +294,10 @@ content: function (data) {
         content: "ul",
         type: "tag",
         child: {
-            content: function () {
+            content: function (_, parent) {
+
+                console.dir(parent); // Data <ul> can be found here!
+
                 const elementsWithData = [];
                 for (let i = 0; i < 4; i++) {
                     elementsWithData[elementsWithData.length] = {element: document.createElement("li"), data: "p"};
@@ -302,8 +306,9 @@ content: function (data) {
             },
             type: "function",
             child: {
-                content: function (data) {
+                content: function (data, parent) {
                     console.dir(data); // Data "p" can be found here!
+                    console.dir(parent); // Data <li> can be found here!
                 },
                 type: "function",
             }
