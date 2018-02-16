@@ -9,7 +9,7 @@ const templateEngine = (function () {
                 }
             }
         },
-        addContent: function (parent, type, content) {
+        addContent: function (parent, type, content, data) {
 
             if (parent != undefined && content != undefined) {
                 if (type == undefined) { // no type? Use html for debug purposes.
@@ -19,15 +19,23 @@ const templateEngine = (function () {
                 switch(type) {
                     case "function": // Let a custom function handle how the elements are created.
                         return (function () {
-                            const elements = content();
-                            if (elements != undefined && elements.length > 0) {
+                            const elementsOrDataWithElement = content(data);
+                            // todo retrieve data //
+                            if (elementsOrDataWithElement != undefined && elementsOrDataWithElement.length > 0) {
+                                const elementsWithData = [];
                                 const isElement = app.utility.isElement;
-                                for (let i = 0; i < elements.length; i++) {
-                                    if (isElement(elements[i])) {
-                                        parent.append(elements[i]);
+                                for (let i = 0; i < elementsOrDataWithElement.length; i++) {
+                                    const elementOrDataWithElement = elementsOrDataWithElement[i];
+                                    if (isElement(elementOrDataWithElement)) {
+                                        parent.append(elementOrDataWithElement);
+                                        elementsWithData[elementsWithData.length] = {element: elementOrDataWithElement, data: data};
+
+                                    } else if (typeof(elementsOrDataWithElement) == "object" && isElement(elementOrDataWithElement.element)) {
+                                        elementsWithData[elementsWithData.length] = elementOrDataWithElement;
+                                        parent.append(elementOrDataWithElement.element);
                                     }
                                 }
-                                return elements;
+                                return elementsWithData;
                             }
                             return false;
                         })();
@@ -39,27 +47,38 @@ const templateEngine = (function () {
                             newElement.innerHTML += content
                             newElement.setAttribute("template-engine-wrapper", true);
                             parent.append(newElement);
-                            return [newElement];
+                            return [{element: newElement, data: data}];
                         })();
 
                     case "text": // create textContent
                         return (function () {
-                            const newElement = document.createTextNode(content);
-                            parent.textContent = "";
-                            parent.append(newElement);
-                            return true;
+
+                            if (content === "[use-data]"){
+                                content = data;
+                            }
+                            if (content != undefined) {
+                                const newElement = document.createTextNode(content);
+                                parent.textContent = "";
+                                parent.append(newElement);
+                                return true;
+                            }
                         })();
 
                     case "tag": // create tag
                         return (function () {
-                            const newElement = document.createElement(content);
-                            parent.append(newElement);
-                            return [newElement];
+                            if (content === "[use-data]"){
+                                content = data;
+                            }
+                            if (content != undefined) {
+                                const newElement = document.createElement(content);
+                                parent.append(newElement);
+                                return [{element: newElement, data: data}];
+                            }
                         })();
                 }
             }
         },
-        apply: function (instruction, parent) {
+        apply: function (instruction, parent, data) {
             let query = "";
 
             // Set the parent as default start point.
@@ -71,6 +90,10 @@ const templateEngine = (function () {
                 query = newQuery;
             }
 
+            // we found (new) data, lets flow it in the system.
+            if (instruction.data != undefined) {
+                data = instruction.data;
+            }
 
 
 
@@ -86,7 +109,7 @@ const templateEngine = (function () {
                             parent.setAttribute("template-enige-temp", true);
 
 
-                            parentElements = previousParent.querySelectorAll("[template-enige-temp]" + query);
+                            parentElements = previousParent.querySelectorAll("[template-enige-temp] " + query.trim());
 
                             parent.removeAttribute("template-enige-temp");
 
@@ -142,29 +165,31 @@ const templateEngine = (function () {
                             const parentElement = parentElements[i];
 
 
+
                             // Make the new elements.
-                            const newParentElements = templateEngine.addContent(parentElement, instruction.type, content);
+                            const newElementsWithData = templateEngine.addContent(parentElement, instruction.type, content, data);
 
                             // Validate the outcome.
-                            if (newParentElements != undefined && newParentElements !== true && newParentElements.length > 0) {
+                            if (newElementsWithData != undefined && newElementsWithData !== true && newElementsWithData.length > 0) {
 
                                 // Go through all new created elements.
-                                for (let parentIndex = 0; parentIndex < newParentElements.length; parentIndex++) {
+                                for (let elementIndex = 0; elementIndex < newElementsWithData.length; elementIndex++) {
 
 
-                                    const newParentElement = newParentElements[parentIndex];
-                                    if (newParentElement != undefined) {
-
+                                    const newElementWithData = newElementsWithData[elementIndex];
+                                    if (newElementWithData != undefined) {
+                                        const newElement = newElementWithData.element;
                                         // collect the new created elements
-                                        instruction.elements[instruction.elements.length] = newParentElement;
+                                        instruction.elements[instruction.elements.length] = newElement;
 
                                         // apply all new instructions
                                         if (instructionChildren != undefined && instructionChildren.length > 0) {
 
                                             // All new instructions apply to new elements.
                                             const apply = templateEngine.apply; // << optimisation
+                                            console.log("data:", newElementWithData.data);
                                             for (let j = 0; j < instructionChildren.length; j++) {
-                                                apply(instructionChildren[j], newParentElement);
+                                                apply(instructionChildren[j], newElement, newElementWithData.data);
                                             }
                                         }
                                     }
