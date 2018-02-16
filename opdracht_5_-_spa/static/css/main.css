@@ -35,19 +35,57 @@ nav li:first-child a {
     visibility: hidden;
 }
 
-h2 {
-    font-size: 2rem;
-    height: 2rem;
+h1, h2, h3, h4, h5 {
     text-align: center;
     font-family: 'Josefin Slab', serif;
+}
+
+h1 {
+    font-size: 2rem;
+    height: 2rem;
     border-bottom: 2px solid rgb(150, 150, 150);
     margin-bottom: 1rem;
     padding: 1rem;
 
 }
 
+h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    margin: 2rem 0 1rem 0;
+}
+
 svg {
     width: 100%;
     height: auto;
     background-color: black;
+}
+
+table, tbody {
+    width: 100%;
+    display: block;
+}
+
+
+
+tr {
+    display: flex;
+    text-align: left;
+
+    /* width: calc(100% - 2rem ); */
+}
+
+tr > * {
+    min-height: 2rem;
+    line-height: 2rem;
+}
+
+tr th {
+    width: 50%;
+
+}
+
+tr td {
+    width: 50%;
+    overflow: scroll;
 }

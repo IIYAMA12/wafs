@@ -7,24 +7,7 @@ const datavisComponent = (function (datavisCanvas) {
         svgHeight = canvastSize;
 
     let elementData;
-    // const rowsIndex = [
-    //     ["absolute_magnitude_h"],
-    //     ["estimated_diameter", "feet", "estimated_diameter_max"],
-    //     ["estimated_diameter", "kilometers", "estimated_diameter_max"],
-    //     ["estimated_diameter", "meters", "estimated_diameter_max"],
-    //     ["estimated_diameter", "miles", "estimated_diameter_max"],
-    //     ["is_potentially_hazardous_asteroid"],
-    //     ["close_approach_data", "close_approach_date"],
-    //     ["close_approach_data", "miss_distance", "astronomical"],
-    //     ["close_approach_data", "miss_distance", "kilometers"],
-    //     ["close_approach_data", "miss_distance", "lunar"],
-    //     ["close_approach_data", "miss_distance","miles"],
-    //     ["close_approach_data", "orbiting_body"],
-    //     ["close_approach_data", "relative_velocity", "kilometers_per_hour"],
-    //     ["close_approach_data", "relative_velocity", "kilometers_per_second"],
-    //     ["close_approach_data", "relative_velocity", "miles_per_hour"],
-    //     ["links"]
-    // ];
+
     const rowsData = [
         {indexes:["absolute_magnitude_h"], header: "Absolute magnitude"},
         {indexes:["estimated_diameter", "feet", "estimated_diameter_max"], header: "Feet (Estimated diameter)"},
@@ -32,7 +15,7 @@ const datavisComponent = (function (datavisCanvas) {
         {indexes:["estimated_diameter", "meters", "estimated_diameter_max"], header: "Meters (Estimated diameter)"},
         {indexes:["estimated_diameter", "miles", "estimated_diameter_max"], header: "Miles (Estimated diameter)"},
         {indexes:["is_potentially_hazardous_asteroid"], header: "Is potentially hazardous asteroid"},
-        {indexes:["close_approach_data", "close_approach_date"], header: "Close approach date"},
+        // {indexes:["close_approach_data", "close_approach_date"], header: "Close approach date"},
         {indexes:["close_approach_data", "miss_distance", "astronomical"], header: "Astronomical (distance)"},
         {indexes:["close_approach_data", "miss_distance", "kilometers"], header: "Kilometers (distance)"},
         {indexes:["close_approach_data", "miss_distance", "lunar"], header: "Lunar (distance)"},
@@ -41,14 +24,14 @@ const datavisComponent = (function (datavisCanvas) {
         {indexes:["close_approach_data", "relative_velocity", "kilometers_per_hour"], header: "Kilometers per hour (velocity)"},
         {indexes:["close_approach_data", "relative_velocity", "kilometers_per_second"], header: "Kilometers per second (velocity)"},
         {indexes:["close_approach_data", "relative_velocity", "miles_per_hour"], header: "Miles per hour (velocity)"},
-        {indexes:["links"], header: "Links"},
+        {indexes:["links", "self"], header: "Links"},
     ];
 
 
 
     const template = [
         {
-            query: "h3",
+            query: "> h2",
             content: function (_, parent) {
                 const data = elementData;
                 if (data != undefined && data != undefined) {
@@ -61,6 +44,17 @@ const datavisComponent = (function (datavisCanvas) {
                 // return [{element: element, data: data}];
             },
             type: "function",
+
+        },
+        {
+
+            query: "> p time",
+            content: function (_, parent) {
+                parent.textContent = "";
+                parent.append(document.createTextNode(elementData.data.close_approach_data.close_approach_date));
+                parent.setAttribute("datetime", elementData.data.close_approach_data.epoch_date_close_approach);
+            },
+            type: "function"
 
         },
         {
@@ -86,7 +80,6 @@ const datavisComponent = (function (datavisCanvas) {
 
                         rowElements[rowElements.length] = {element: tableRow, data: {headerText: rowsData[i].header, value: value}};
                     }
-                    console.table(rowElements.length, rowElements);
                     return rowElements;
                 }
             },
@@ -167,7 +160,9 @@ const datavisComponent = (function (datavisCanvas) {
             ;
 
 
-
+            asteroidGroup
+                .exit()
+                    .remove();
 
             asteroidGroupEnter = asteroidGroup
                     .enter();
@@ -214,10 +209,11 @@ const datavisComponent = (function (datavisCanvas) {
 
 
             let asteroidAnimationIndex = 0;
-            clearInterval(this.asteroidInterval);
+            // clearInterval(this.asteroidInterval);
 
 
             const moveAsteroid = function () {
+
                 var asteroidTransition = d3.transition()
                     .duration(10000)
                     .ease(d3.easeLinear)
@@ -228,7 +224,9 @@ const datavisComponent = (function (datavisCanvas) {
                     allAsteroidsSelectionD3[asteroidAnimationIndex]
                         .transition(asteroidTransition)
                             .attr("transform", "translate(" + -svgWidth + "," + svgHeight + ")")
-                                // .attr("transform", "translate(" + svgWidth + "," + -svgHeight + ")")
+                            .on("end", function () {
+                                moveAsteroid();
+                            })
                     ;
 
                     elementData = allAsteroidsSelectionD3[asteroidAnimationIndex].data()[0];
@@ -240,15 +238,19 @@ const datavisComponent = (function (datavisCanvas) {
                     setTimeout(function () {
                         asteroidAnimationIndex = 0;
                         asteroidsGroupEnter
-                            .attr("transform", "translate(" + svgWidth + "," + -svgHeight + ")");
+                            .attr("transform", "translate(" + svgWidth + "," + -svgHeight + ")")
+                                .transition();
                     }, 8000);
                 }
             };
+            console.log(this);
 
+            asteroidsGroupEnter.transition(); // stop animation
             moveAsteroid();
 
+
             // Use a single interval to activate one asteroid per X time.
-            this.asteroidInterval = setInterval(moveAsteroid, 4000);
+            // this.asteroidInterval = setInterval(moveAsteroid, 4000);
 
 
             const contentScale = 0.7;
