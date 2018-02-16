@@ -188,7 +188,7 @@ The next step is to detect if the URL hash has been changed. We can use the even
 
 
 
-[Web app from scratch](https://iiyama12.github.io/wafs/)
+[Web app from scratch](https://iiyama12.github.io/wafs/app)
 
 ```CSS
 /*
