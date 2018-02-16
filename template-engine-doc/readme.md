@@ -34,7 +34,7 @@ Result:
 ```
 
 ### Building with sub elements
-If you want to insert elements while generating. Use the keynames `children` or `child` depending on the amount of elements. The keyname `children` stands for the ability to insert multiple child’s. You will need to wrap them around an array.
+If you want to insert sub elements. Then use the keynames `children` or `child` depending on the amount of elements. The keyname `children` stands for the ability to insert multiple child’s. You will need to wrap them around an array.
 
 ```JS
 [
@@ -200,7 +200,7 @@ If you want to pass data to an element, then you have to send an object which co
 {element: DOM_element, data: data}
 ```
 
-The keyword `[use-data]` is used by the `text` and `tag` type to use data from passed data.
+The keyword `[use-data]` is used by the `text` and `tag` type to use the passed data.
 ```JS
 "[use-data]"
 ```
