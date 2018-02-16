@@ -1,28 +1,27 @@
+// First constructor
 
-let secondNewConstructor = function () {
+const newConstructor = function (param) {
+    this.yeah = "yeah!";
+};
+
+
+// Second constructor
+
+const secondNewConstructor = function () {
     this.yeah2 = "yeah2!";
 };
 
+
+// Use the prototype method to add a new function under the key "key".
 secondNewConstructor.prototype.hey = function () {
     console.log("hey!");
 };
 
-let newConstructor = function (param) {
-    console.log(param);
-    this.yeah = "yeah!";
-};
-
+// Use the prototype method to nest the second newConstructor prototypes in to first newConstructor.
 newConstructor.prototype = new secondNewConstructor();
 
-let newObject2 = new newConstructor("test1");
+// Now construct a new object with the first newConstructor.
+const newObject = new newConstructor("give it an argument just for testing");
 
-
-
-console.log(newObject2.hey());
-// newObject.prototype
-
-var b = {};
-
-var example = b.example = {example : "example"};
-
-console.log(example, b.example);
+// Call the nested hey prototype function. 
+newObject.hey();
