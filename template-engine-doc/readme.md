@@ -63,7 +63,7 @@ If you want to insert elements while generating. Use the keynames `children` or 
 ```
 
 
-###
+### Types in action: `tag`, `text`, `html`
 
 ```JS
 [
@@ -120,4 +120,194 @@ Result:
 <div template-engine-wrapper="true">
     <article><p>Dirty html</p></article>
 </div>
+```
+
+### Load template
+For loading a template, you have to call the process method of the templateEngine. You have to pass the template into the first argument. The second argument has to be filled in with a DOM element, which where the template starts from applying instructions.
+
+```JS
+    const template = [
+        // ...
+    ];
+
+    const startAtElement = document.getElementById("id");
+
+    templateEngine.process(template, startAtElement);
+```
+
+
+I do recommended to not delete the template. Because when the exactly same template is applied again, all old elements will be `deleted automatic`. In this iteration this will be done by cutting down the subRoot elements on the bottom. Which means it will cut the first layer of elements, that are directly in the main array.
+
+
+#### SubRoot
+```JS
+[
+    {
+        content: "section",
+        type: "tag",
+    },
+    {
+        content: "section",
+        type: "tag",
+    },
+    {
+        content: "section",
+        type: "tag",
+    },
+]
+```
+
+### Functions
+Using functions makes creating content much more easy. This function will be called when the template is processed.
+In the first iteration dynamic data has to be placed on top of the template. This will change in the future.
+
+```JS
+let globalData = ["item:1", "item:2", "item:3"];
+
+[
+    {
+        content: "ul",
+        type: "tag",
+        child: {
+            content: function () {
+                const elements = [];
+                for (let i = 0; i < globalData.length; i++) {
+                    elements[elements.length] = document.createElement("li");
+                }
+                return elements;
+            },
+            type: "function"
+        }
+    }
+]
+```
+
+```HTML
+<ul>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
+```
+
+(example untested)
+
+
+### Passing data to a text child.
+If you want to pass data to an element, then you have to send an object which contains the element as well as the data you want to pass.
+
+```JS
+{element: DOM_element, data: data}
+```
+
+The keyword `[use-data]` is used by the `text` and `tag` type to use data from passed data.
+```JS
+"[use-data]"
+```
+
+```JS
+let globalData = ["item:1", "item:2", "item:3"];
+
+[
+    {
+        content: "ul",
+        type: "tag",
+        child: {
+            content: function () {
+                const elementsWithData = [];
+                for (let i = 0; i < globalData.length; i++) {
+                    elementsWithData[elementsWithData.length] = {element: document.createElement("li"), data: globalData[i]};
+                }
+                return elementsWithData;
+            },
+            type: "function",
+            child: {
+                content: "[use-data]",
+                type: "text"
+            }
+        }
+    }
+]
+```
+
+```HTML
+<ul>
+    <li>item:1</li>
+    <li>item:2</li>
+    <li>item:3</li>
+</ul>
+```
+
+(example untested)
+
+### Inheritance
+Once data has been send to the first layer of children. The data will be passed automatic to the children of the children.
+
+```JS
+[
+    {
+        content: "ul",
+        type: "tag",
+        child: {
+            content: function () {
+                const elementsWithData = [];
+                for (let i = 0; i < 4; i++) {
+                    elementsWithData[elementsWithData.length] = {element: document.createElement("li"), data: "p"};
+                }
+                return elementsWithData;
+            },
+            type: "function",
+            child: {
+                content: "[use-data]",
+                type: "tag",
+                child: {
+                    content: "[use-data]",
+                    type: "text"
+                }
+            }
+        }
+    }
+]
+```
+
+```HTML
+<ul>
+    <li><p>p</p></li>
+    <li><p>p</p></li>
+    <li><p>p</p></li>
+</ul>
+```
+
+### Receive data in to a function
+When data is add by a parent, a child with the type `function` can receive the data at it's first parameter.
+
+```JS
+content: function (data) {
+    console.dir(data); // data can be found here!
+},
+```
+
+```JS
+[
+    {
+        content: "ul",
+        type: "tag",
+        child: {
+            content: function () {
+                const elementsWithData = [];
+                for (let i = 0; i < 4; i++) {
+                    elementsWithData[elementsWithData.length] = {element: document.createElement("li"), data: "p"};
+                }
+                return elementsWithData;
+            },
+            type: "function",
+            child: {
+                content: function (data) {
+                    console.dir(data); // Data "p" can be found here!
+                },
+                type: "function",
+            }
+        }
+    }
+]
 ```
