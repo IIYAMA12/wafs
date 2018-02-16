@@ -5,19 +5,19 @@ The course repo for 'Web App From Scratch'
 
 ## Advantages and disadvantages of JavaScript libraries/frameworks (lang NL)
 
-### Voordeel
-* Minder code schrijven en dus minder tijd kwijt. Het framework doet veel dingen op de achtergrond al voor je. (eigen ervaring)
-* Features die gebruik maken van matrix en vector berekeningen, kunnen worden gebruikt zonder dat hier voor geleerd is. Denk hierbij aan de bibliotheek snap.svg, die gespecialiseerd is in svg animaties. Maar ook bijvoorbeeld d3, die complexe grafieken kan creëert. (eigen ervaring)
-* Het kan gebruiksvriendelijker ontworpen zijn voor de gebruiker.
+### Advantages
+* Writing less code, which means it it will cost less time.
+* Features that use matrixes and vectors are available, which you can use without learning how they really work. Libraries like snap.svg which are specified in svg animations are making use of this. Also D3 is also included features like that for complex graphs.
+* It can be designed more user friendly.
 
 
-### Nadeel
-* Het aanroepen van vervangende functies hebben vaak een langere Uitvoertijd tijd in vergelijking met Vanilla javascript. Dit is niet altijd zo omdat het framework er misschien een betere oplossing voor heeft om hetzelfde te doen. Maar meestal wel, omdat elke aanroeping extra tijd kost. Minder functies, betekend snellere code. (eigen ervaring)
-* Nieuwe functies kunnen pas gebruikt worden na het upgraden van de code.
-* Het upgraden van de framework/bibliotheek kan fouten veroorzaken in jouw systeem. Het is daarom belangrijk om de bugtracker te bekijken voordat je zo een upgrade maakt. Als er geen oplossing is, zit er niks anders op om te downgraden (of her te installeren bij back-end) als dat nog mogelijk is.
-* De ondersteuning van het framework/bibliotheek kan vervallen. Dit kan vervelend worden op het moment dat de standaardisering van het web veranderd. Maar ook zou het kunnen dat een nog niet gevonden fout wordt ontdekt.
-* Je leert niet de onderliggende principes van Vanilla Javascript.
-* Langere downloadtijd benodigd.
+### Disadvantages
+* Calling from replaced functions do have often a longer execution time in compare to Vanilla JavaScript. This isn’t always true, because the framework might have a better solution to do something better.
+* New functions can only be used after upgrading the code of the framework.
+* Updating the framework can create bugs in to your own designed system, as it is technically a part of it. Because of that is it important to check bug tracker before you upgrade. If there is no solution for the bug, then you probably have to downgrade or disable a component if that is possible.
+* The support of a framework can be stopped. This can be annoying when there are still bugs in it or if the web standardization is changing.
+* You do no longer learn the basic principles of Vanilla Javascript.
+* Longer download time.
 
 
 [Bron Vanilla Javascript leren voor het werken met frameworks](https://snipcart.com/blog/learn-vanilla-javascript-before-using-js-frameworks)
@@ -29,28 +29,30 @@ The course repo for 'Web App From Scratch'
 
 ## Voor en nadelen single-page applicatie (SPA)
 
-### Voordelen
-* Een single-page is heel snel. Na het downloaden van alle website code (HTML, CSS, Javascript), hoeft alleen de data/content heen en weer.
-* De server hoeft niet meer de pagina te renderen, na dat deze gedownload is. Dat doet clientside nu. Jorik: `Wat waarschijnlijk inhoud dat er minder serverbelasting is op dat gebied.`
-* Makkelijker te debuggen. Alle data is clientside, hierdoor kan je makkelijk data vergelijken met de elementen op het scherm. (Jorik: `Er hoeft dus minder gekeken te worden naar sessies op serverside.`)
-* Deze applicatie slaat alles op in het geheugen van de client, dat de mogelijkheid bied om na de download de website offline te laten werken.
+### Advantages
+* A single-page is very fast. After downloading all website code (HTML, CSS, JavaScript), only the NEW required data/content to be downloaded and send.
+* The server doesn’t have to prepare the page, before the page is send to the client. This will be done by the client. Jorik: “That probably means less server cpu usage.”
+* Easier to debug. All data is clientside, which means that you can compare the data as well as access the data.
+* The application saves everything in the memory of the client, that makes it possible to use the site offline after downloading it.
 
-### Nadelen
-* Het is moeilijk om deze voor de zoekmachine te optimaliseren. De zoekmachine van Google indexeert elke beschikbare pagina op het web. Maar zal moeite hebben met AJAX (Asynchronous Javascript en XML), omdat Google niet standaard weet wanneer de website geladen is en of het überhaupt dit zou kunnen downloaden/lezen.
-* Bij het downloaden van de pagina wordt gelijk de hele website met frameworks gedownload. Dit is een relatieve grote download in vergelijking met maar één pagina te downloaden.
-* Javascript is ten alle tijden benodigd. Mocht deze uitstaan dan kan de website niet geladen worden op de juiste wijzen.
-* De applicatie is minder veilig. Omdat er veel data via voornamelijk AJAX gecommuniceerd wordt tussen client en server. Je moet dus meer ingangen dichtmaken. (In het gevonden artikel wordt ook het volgende gezegd: “it enables attackers to inject client-side scripts into web application by other users”. Hoe dit zou gebeuren wordt niet duidelijk uitgelegd.)
-* Gevoeliger voor geheugen lekken van Javascript.
+### Disadvantages
+* It is harder to optimise for search engines. The search engine from Google will index every page on the web. But this will be hard with AJAX (Asynchronous Javascript en XML), because Google doesn’t know when the page has been loaded.
+* The first time the page will be downloaded, the whole framework is downloaded with it. This is a relative large download in compare of downloading a single page.
+* Javascript is always required, as almost nothing will work without it.
+* The application is less secure, because a lot of communication has to be done with AJAX. Which means that there are a lot of ways in and out that you have to protect. In the article they even talk about code injections on clients: “it enables attackers to inject client-side scripts into web application by other users”.)
+* It is more vulnerable for memory leaks.
 
-## Voor en nadelen multiple-page applicatie
 
-### Voordelen
-* Je houdt beter overzicht over de website.
-* Goed en makkelijk voor zoekmachines om te doorgronden.
+### Advantages and disadvantages multiple-page application
 
-### Nadelen
-* Frontend en backend zijn sterk van elkaar afhankelijk.
-* Het uitvoeren van de website wordt complexer omdat de bouwer het framework clientside of serverside moet gaan gebruiken. Het kan daarom langer duren voordat de website klaar is.
+
+### Advantages
+* Better overview of the website
+* Easier for search engines to analyse.
+
+### Disadvantages
+* Frontend and backend do require each other to operate.
+* Building of the website becomes more complex because the programmer has to use the framework client side or server side. Because of that it can last longer before the website is finished.
 
 [Bron: Single-page vs multiple-page application](https://medium.com/@NeotericEU/single-page-application-vs-multiple-page-application-2591588efe58)
 
