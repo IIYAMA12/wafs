@@ -36,8 +36,8 @@ class Position {
                 let progress = ((this_.endTimeAnimation - timeNow) / this_.animationDuration);
 
                 // bereken nieuwe positie
-                posX = this_.startX + ((this_.endX - this_.startX) * progress), 
-                posY = this_.startY + ((this_.endY - this_.startY) * progress), 
+                posX = this_.startX + ((this_.endX - this_.startX) * progress),
+                posY = this_.startY + ((this_.endY - this_.startY) * progress),
                 posZ = this_.startZ + ((this_.endZ - this_.startZ) * progress);
             }
         }
@@ -64,10 +64,10 @@ class Teleportation extends Position {
         return false;
     }
     flyTo (endX, endY, endZ) {
-        this.endX = Number(endX), 
-        this.endY = Number(endY), 
+        this.endX = Number(endX),
+        this.endY = Number(endY),
         this.endZ = Number(endZ);
-        
+
         if (this.speed > 0) {
             this.animationDuration = 1000 / this.speed; // speed is per second
             let timeNow = new Date().getTime();
@@ -97,13 +97,16 @@ var handlerOfProxy = {
 
         return false;
     }
-}
+};
 
 var proxyTestObject = {
     testKey : "value"
-}
+};
 
 var newProxy = new Proxy(proxyTestObject, handlerOfProxy);
+
+console.log(newProxy.testKey); // true
+console.log(newProxy.somethingElse); // false
 
 // -------------------------------------------- //
 
