@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Single page web app</title>
+    <link rel="stylesheet" href="static/css/reset.css">
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/css/navigation.css">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:700" rel="stylesheet">
+</head>
+<body>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <nav id="main-nav">
+        <h1>Navigation</h1>
+        <ul>
+            <li><a href="#startscreen">Startscreen</a></li>
+            <li><a href="#api-nasa-gov">API NASA</a></li>
+        </ul>
+    </nav>
+    <section id="startscreen" class="hidden">
+        <h1>Startscreen</h1>
+        <a href="#main-nav">Navigation</a>
+    </section>
+    <section id="api-nasa-gov" class="hidden">
+        <h1>API NASA</h1>
+        <svg viewbox="0 0 1000 1000">
+            <g></g>
+            <image x="-80" y="-80" height="160" width="160" href="static/images/earth.svg"/>
+        </svg>
+
+        <h2></h2>
+        <p>Close approach date: <time datetime=""></time></p>
+        <table>
+            <tbody>
+            </tbody>
+        </table>
+        <a href="#main-nav">Navigation</a>
+    </section>
+
+
+    <script src="static/scripts/template-engine.js"></script>
+    <script src="static/scripts/nasa-datavis.js"></script>
+    <script src="static/scripts/index.js"></script>
+
+    <script src="static/scripts/templates/nasa.js"></script>
+</body>
+</html>
