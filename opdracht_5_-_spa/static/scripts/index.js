@@ -1,16 +1,15 @@
+
+
 const app = (function () {
 
 
-    const states = {
-        requestID: []
-    }
-
 	const app = {
+
 		init: function () {
 			this.routes.init();
-
 		},
 
+        // Takes care of the routes.
 		routes: {
 			init: function () {
 
@@ -25,30 +24,37 @@ const app = (function () {
 					 MDN web docs: "The hashchange event is fired when the fragment identifier of the URL has changed (the part of the URL that follows the # symbol, including the # symbol)."
 					 https://developer.mozilla.org/en-US/docs/Web/Events/hashchange
 				*/
-				window.addEventListener("hashchange", function (e) {
-					const sectionName = e.newURL.split('#')[1];
+				window.addEventListener("hashchange", (e) => {
+					const sectionName = location.hash.split('#')[1];
+
 					app.sections.toggle(sectionName);
 
 				});
 			},
+
             getCurrentRoute: function () {
                 return location.href.split('#')[1];
             }
 		},
+
+        // pages: Shows the page and decides the dynamic content.
 		sections: {
 			toggle: function (route) {
 				const sections = document.querySelectorAll("body > *");
 
-				for (let index = 0; index < sections.length; index++) {
-					const element = sections[index];
-					element.classList.add("hidden");
-				}
+
 
                 if (this.data[route]) {
+                    for (let index = 0; index < sections.length; index++) {
+                        const element = sections[index];
+                        element.classList.add("hidden");
+                    }
+
                     this.activateStartFunction(this.data[route]);
+                    document.getElementById(route).classList.remove("hidden");
                 }
 
-                document.getElementById(route).classList.remove("hidden");
+
 			},
             // data is not yet used, but will be used later on.
             activateStartFunction: function (sectionData) {
@@ -63,12 +69,17 @@ const app = (function () {
                     }
                 }
             },
-
+            template: {
+                collection: {},
+                add: function (id, template) {
+                    this.collection[id] = template;
+                },
+                get: function (id) {
+                    return this.collection[id];
+                }
+            },
             data: {
                 ["startscreen"] : {
-
-                },
-                ["best-practices"] : {
 
                 },
                 ["main-nav"] : {
@@ -78,100 +89,50 @@ const app = (function () {
                     startFunctions: [
                         function (_, sectionData) {
 
-                            var request = app.JSONHttpRequest.setup("api-nasa");
-                            sectionData.httpRequestsById["api-nasa"] = request;
+							let localStorageData = localStorage.getItem("api-nasa");
 
 
-                            app.JSONHttpRequest.open(request, "GET", "https://api.nasa.gov/neo/rest/v1/feed?api_key=1NnMgn9RYxKvz0o2FDqdQ3poB6vtGreh8oLahlBy", true);
-                            app.JSONHttpRequest.send(request);
+							if (localStorageData == undefined) {
+	                            var request = app.JSONHttpRequest.setup("api-nasa");
+	                            sectionData.httpRequestsById["api-nasa"] = request;
 
 
-                            request.customData.callBack = datavisComponent.load;
+	                            app.JSONHttpRequest.open(request, "GET", "https://api.nasa.gov/neo/rest/v1/feed?api_key=1NnMgn9RYxKvz0o2FDqdQ3poB6vtGreh8oLahlBy", true);
+	                            app.JSONHttpRequest.send(request);
+
+
+	                            request.customData.callBack = (rawData) => {
+	                                const data = JSON.parse(rawData);
+	                                if (data != undefined) {
+	                                    let nearEarthObjects = data["near_earth_objects"];
+
+	                                    for(let date in nearEarthObjects){
+	                                        const asteroids = nearEarthObjects[date];
+	                                        for (let i = 0; i < asteroids.length; i++) {
+	                                            const asteroid = asteroids[i];
+	                                            // remove one index level for the data at key close_approach_data.
+	                                            const closeApproachData = asteroid["close_approach_data"][0];
+	                                            asteroid["close_approach_data"] = closeApproachData;
+	                                        }
+	                                    }
+
+										localStorage.setItem("api-nasa", JSON.stringify(nearEarthObjects));
+	                                    datavisComponent.load(nearEarthObjects);
+	                                }
+	                            }
+							} else {
+								localStorageData = JSON.parse(localStorageData);
+								datavisComponent.load(localStorageData);
+							}
+
+
                         },
                         function (_, sectionData) {
-                            const template = sectionData.template;
+                            const template = app.sections.template.get("nasa");
                             templateEngine.process(template, document.getElementById("api-nasa-gov"));
                         }
                     ],
-                    httpRequestsById: {},
-                    template: [
-                        {
-                            query: "> h2",
-                            content: "API NASA (template test)",
-                            type: "text",
-                        },
-                        {
-                            content: "section",
-                            type: "tag",
-                            children: [
-                                {
-                                    content: "h4",
-                                    type: "tag",
-                                    children: [
-                                        {
-                                            content: "h4",
-                                            type: "text"
-                                        },
-                                    ]
-                                },
-                                {
-                                    content: "p",
-                                    type: "tag",
-                                    children: [
-                                        {
-                                            content: "p",
-                                            type: "text"
-                                        },
-                                    ]
-                                },
-                                {
-                                    content: "h4",
-                                    type: "tag",
-                                    children: [
-                                        {
-                                            content: "h4",
-                                            type: "text"
-                                        },
-                                    ]
-                                },
-                                {
-                                    content: "p",
-                                    type: "tag",
-                                    children: [
-                                        {
-                                            content: "p",
-                                            type: "text"
-                                        },
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            content: "p",
-                            type: "tag",
-                            children: [
-                                {
-                                    content: "p test",
-                                    type: "text"
-                                },
-                            ]
-                        },
-                        {
-                            content: function () {
-                                const headerText = ["test1", "test2"];
-                                const elements = [];
-
-                                for (let i = 0; i < headerText.length; i++) {
-                                    let element = document.createElement("h2");
-                                    element.textContent = headerText[i];
-                                    elements[elements.length] = element
-                                }
-                                return elements;
-                            },
-                            type: "function",
-                        }
-
-                    ]
+                    httpRequestsById: {}
                 }
             }
 		},
@@ -213,9 +174,14 @@ const app = (function () {
                 return httpRequest.open(method, url, a_sync, user, password);
             },
 
-            send: function () {
-                const httpRequest = typeof(arguments[0]) == "string" ? this.httpRequestsById[arguments[0]] : arguments[0];
-                return httpRequest.send();
+            send: function () { // http request || id
+                if (arguments[0] != undefined) {
+                    // send it by direct http request or use an id to find it.
+                    const httpRequest = typeof(arguments[0]) == "string" ? this.httpRequestsById[arguments[0]] : arguments[0];
+                    if (httpRequest != undefined) {
+                        return httpRequest.send();
+                    }
+                }
             },
 
             getById: function (id) {
@@ -223,40 +189,22 @@ const app = (function () {
             },
 
             // event functions
-            loaded: function (e) {
+            loaded: (e) => {
                 const source = e.target;
                 const rawData = source.response;
                 if (rawData != undefined) {
-                    const data = JSON.parse(rawData);
-
-                    let nearEarthObjects = data["near_earth_objects"];
-                    // console.log(nearEarthObjects);
-
-                    for(let date in nearEarthObjects){
-                        const asteroids = nearEarthObjects[date];
-                        for (let i = 0; i < asteroids.length; i++) {
-                            const asteroid = asteroids[i]
-
-
-                            // remove one index level for the data at key close_approach_data.
-                            const closeApproachData = asteroid["close_approach_data"][0];
-                            asteroid["close_approach_data"] = closeApproachData;
-
-                            // console.table(asteroid);
-                        }
-                    }
-                    if (source.customData.callBack != undefined) {
-                        source.customData.callBack(nearEarthObjects);
+                    if (source.customData != undefined && source.customData.callBack != undefined) {
+                        source.customData.callBack(rawData);
                     }
                 }
             },
-            error: function (e){
+            error: (e) =>{
 
             },
-            abort: function (e) {
+            abort: (e) => {
 
             },
-            progress: function (e) {
+            progress: (e) => {
 
                 if (e.lengthComputable) {
                     var percentComplete = e.loaded / e.total;
@@ -278,7 +226,7 @@ const app = (function () {
 	}
 
     // All other scripts loaded?
-    window.addEventListener("load", function (){
+    window.addEventListener("load", () => {
         app.init();
     });
 
