@@ -36,7 +36,7 @@ Result:
 ```
 
 ### Building with sub elements
-If you want to insert sub elements. Then use the keynames `children` or `child` depending on the amount of elements. The keyname `children` stands for the ability to insert multiple child’s. You will need to wrap them around an array.
+If you want to insert sub elements. Then use the keynames `children` or `child` depending on the amount of elements. The keyname `children` stands for the ability to insert multiple child’s. You will need to wrap them around with an array.
 
 ```JS
 [
