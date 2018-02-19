@@ -139,18 +139,18 @@ Optional Arguments
 * `data` A variable of any type, which you want to use in the template.
 
 ```JS
-    // The template
-    const template = [
-        // ...
-    ];
+// The template
+const template = [
+    // ...
+];
 
-    // Inside this element is where the template engine will start building up.
-    const startAtElement = document.getElementById("id");
+// Inside this element is where the template engine will start building up.
+const startAtElement = document.getElementById("id");
 
-    // Add data to the root. (Note: the data which is flowing inside of the system is the original data. Make a copy of it, if you are going to mutate it inside.)
-    const data = {};
+// Add data to the root. (Note: the data which is flowing inside of the system is the original data. Make a copy of it, if you are going to mutate it inside.)
+const data = {};
 
-    templateEngine.render(template, startAtElement, data);
+templateEngine.render(template, startAtElement, data);
 ```
 
 
