@@ -1,4 +1,4 @@
-
+const developingStatus = true;
 
 const app = (function () {
 
@@ -129,7 +129,7 @@ const app = (function () {
                         },
                         function (_, sectionData) {
                             const template = app.sections.template.get("nasa");
-                            templateEngine.process(template, document.getElementById("api-nasa-gov"));
+                            templateEngine.render(template, document.getElementById("api-nasa-gov"));
 
                         }
                     ],
@@ -139,6 +139,9 @@ const app = (function () {
 		},
 
         JSONHttpRequest: {
+			// setup(
+			//
+			// ){},
             setup: function (id) {
                 let httpRequest;
                 if (id != undefined && !this.getById(id) || id == undefined) {
@@ -219,7 +222,8 @@ const app = (function () {
             httpRequestsById: {},
             httpRequests: []
         },
-        utility: { // https://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
+
+		utility: { // https://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
             isElement: function (element) {
                 return element instanceof Element;
             }

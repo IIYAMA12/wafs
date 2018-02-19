@@ -123,16 +123,25 @@ Result:
 ```
 
 ### Load template
-For loading a template, you have to call the process method of the templateEngine. You have to pass the template into the first argument. The second argument has to be filled in with a DOM element, which where the template starts from applying instructions.
+For loading a template, you have to call the render method of the templateEngine. You have to pass the template into the first argument. The second argument has to be filled in with a DOM element, which where the template starts from applying instructions.
+
+#### Syntax
+```JS
+    templateEngine.render(array template, Note startAtElement [, mix data]);
+```
 
 ```JS
     const template = [
         // ...
     ];
 
+    // This is where
     const startAtElement = document.getElementById("id");
 
-    templateEngine.process(template, startAtElement);
+    // Add data to the root. (Note: the data which is flowing inside of the system is the original data. Make a copy of it, if you are going to mutate it inside.)
+    const data = {};
+
+    templateEngine.render(template, startAtElement, data);
 ```
 
 
@@ -157,26 +166,32 @@ I do recommended to not delete the template. Because when the exactly same templ
 ]
 ```
 
+Result: (SubRoot elements)
+```HTML
+<section></section>
+<section></section>
+<section></section>
+```
+
 ### Functions
 Using functions makes creating content much more easy. This function will be called when the template is processed.
 In the first iteration dynamic data has to be placed on top of the template. This will change in the future.
 
 ```JS
-let globalData = ["item:1", "item:2", "item:3"];
-
 [
     {
         content: "ul",
         type: "tag",
         child: {
-            content: function () {
+            content: function (data) {
                 const elements = [];
-                for (let i = 0; i < globalData.length; i++) {
+                for (let i = 0; i < data.length; i++) {
                     elements[elements.length] = document.createElement("li");
                 }
                 return elements;
             },
-            type: "function"
+            type: "function",
+            data: ["item:1", "item:2", "item:3"]
         }
     }
 ]
@@ -192,6 +207,55 @@ Result:
 ```
 
 
+#### Sending back
+Send multiple elements back.
+
+```JS
+[
+    {
+        content: function () {
+
+            const element = document.createElement("p");
+            const secondElement = document.createElement("p");
+
+            return [{element: element}, {element: secondElement}];
+        },
+        type: "function",
+    }
+]
+```
+Send just one element back.
+```JS
+[
+    {
+        content: function () {
+
+            const element = document.createElement("p");
+
+            return {element: element};
+        },
+        type: "function",
+    }
+]
+```
+
+### Attach data on an instruction
+
+```JS
+[
+    {
+        content: "[use-data]",
+        type: "tag",
+        data: "section"
+    }
+]
+```
+
+Result:
+```HTML
+<section></section>
+```
+
 ### Passing data to a text child
 If you want to pass data to an element, then you have to send an object which contains the element as well as the data you want to pass.
 
@@ -205,17 +269,15 @@ The keyword `[use-data]` is used by the `text` and `tag` type to use the passed 
 ```
 
 ```JS
-let globalData = ["item:1", "item:2", "item:3"];
-
 [
     {
         content: "ul",
         type: "tag",
         child: {
-            content: function () {
+            content: function (data) {
                 const elementsWithData = [];
-                for (let i = 0; i < globalData.length; i++) {
-                    elementsWithData[elementsWithData.length] = {element: document.createElement("li"), data: globalData[i]};
+                for (let i = 0; i < data.length; i++) {
+                    elementsWithData[elementsWithData.length] = {element: document.createElement("li"), data: data[i]};
                 }
                 return elementsWithData;
             },
@@ -224,7 +286,8 @@ let globalData = ["item:1", "item:2", "item:3"];
                 content: "[use-data]",
                 type: "text"
             }
-        }
+        },
+        data: ["item:1", "item:2", "item:3"]
     }
 ]
 ```
@@ -297,7 +360,7 @@ content: function (data, parent) {
         child: {
             content: function (_, parent) {
 
-                console.dir(parent); // Data <ul> can be found here!
+                console.dir(parent); // <ul> can be found here!
 
                 const elementsWithData = [];
                 for (let i = 0; i < 4; i++) {
@@ -308,8 +371,8 @@ content: function (data, parent) {
             type: "function",
             child: {
                 content: function (data, parent) {
-                    console.dir(data); // Data "p" can be found here!
-                    console.dir(parent); // Data <li> can be found here!
+                    console.dir(data); // "p" can be found here!
+                    console.dir(parent); // <li> can be found here!
                 },
                 type: "function",
             }

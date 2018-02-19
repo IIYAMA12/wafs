@@ -6,7 +6,7 @@ const datavisComponent = (function (datavisCanvas) {
     const svgWidth = canvastSize,
         svgHeight = canvastSize;
 
-    let elementData;
+    // let elementData;
 
     const rowsData = [
         {indexes:["absolute_magnitude_h"], header: "Absolute magnitude"},
@@ -32,35 +32,30 @@ const datavisComponent = (function (datavisCanvas) {
     const template = [
         {
             query: "> h2",
-            content: function (_, parent) {
-                const data = elementData;
+            content: function (data, parent) {
                 if (data != undefined && data != undefined) {
 
                     const textNode = document.createTextNode(data.data.name);
                     parent.textContent = "";
                     parent.append(textNode);
                 }
-
-                // return [{element: element, data: data}];
             },
             type: "function",
 
         },
         {
-
             query: "> p time",
-            content: function (_, parent) {
+            content: function (data, parent) {
                 parent.textContent = "";
-                parent.append(document.createTextNode(elementData.data.close_approach_data.close_approach_date));
-                parent.setAttribute("datetime", elementData.data.close_approach_data.epoch_date_close_approach);
+                parent.append(document.createTextNode(data.data.close_approach_data.close_approach_date));
+                parent.setAttribute("datetime", data.data.close_approach_data.epoch_date_close_approach);
             },
             type: "function"
 
         },
         {
             query: "table tbody",
-            content: function () {
-                const data = elementData;
+            content: function (data) {
                 if (data != undefined) {
 
                     const rowElements = [];
@@ -88,7 +83,7 @@ const datavisComponent = (function (datavisCanvas) {
                 {
                     content: function (data) {
                         const tableHeader = document.createElement("th");
-                        return [{element: tableHeader, data: data.headerText}];
+                        return {element: tableHeader, data: data.headerText};
                     },
                     type: "function",
                     child: {
@@ -99,7 +94,7 @@ const datavisComponent = (function (datavisCanvas) {
                 {
                     content: function (data) {
                         const tableData = document.createElement("td");
-                        return [{element: tableData, data: data.value}];
+                        return {element: tableData, data: data.value};
                     },
                     type: "function",
                     child: {
@@ -110,6 +105,8 @@ const datavisComponent = (function (datavisCanvas) {
             ]
         },
     ];
+
+
 
 
     const datavisComponent = {
@@ -126,6 +123,28 @@ const datavisComponent = (function (datavisCanvas) {
         },
         canvas: datavisCanvas,
         load: function (data) {
+            if (developingStatus) {
+                templateEngine.render(
+                [
+                    {
+                        content: "ul",
+                        type: "tag",
+                        child: {
+                            content: function (data) {
+                                const elements = [];
+                                for (let i = 0; i < data.length; i++) {
+                                    elements[elements.length] = document.createElement("li");
+                                }
+                                return elements;
+                            },
+                            type: "function",
+                            data: ["item:1", "item:2", "item:3"]
+                        }
+                    }
+                ], document.getElementById("api-nasa-gov"));
+            }
+
+
             let asteroidGroup = this.canvas.select("g");
             const earth = this.canvas.select("image");
 
@@ -229,9 +248,9 @@ const datavisComponent = (function (datavisCanvas) {
                             })
                     ;
 
-                    elementData = allAsteroidsSelectionD3[asteroidAnimationIndex].data()[0];
+                    const elementData = allAsteroidsSelectionD3[asteroidAnimationIndex].data()[0];
 
-                    templateEngine.process(template, document.getElementById("api-nasa-gov"));
+                    templateEngine.render(template, document.getElementById("api-nasa-gov"), elementData);
 
                     asteroidAnimationIndex++;
                 } else { // reset
@@ -243,7 +262,7 @@ const datavisComponent = (function (datavisCanvas) {
                     }, 8000);
                 }
             };
-            console.log(this);
+
 
             asteroidsGroupEnter.transition(); // stop animation
             moveAsteroid();

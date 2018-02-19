@@ -1,11 +1,11 @@
 const templateEngine = (function () {
     const templateEngine = {
-        process: function (template, parentElement) {
+        render: function (template, parentElement, data) {
             if (template != undefined && template.length > 0) {
                 const apply = this.apply; // << optimisation
                 for (let i = 0; i < template.length; i++) {
                     template[i].subRoot = true; // this is for cutting the dom tree only at the bottom.
-                    apply(template[i], parentElement);
+                    apply(template[i], parentElement, data);
                 }
             }
         },
@@ -19,23 +19,40 @@ const templateEngine = (function () {
                 switch(type) {
                     case "function": // Let a custom function handle how the elements are created.
                         return (function () {
-                            const elementsOrDataWithElement = content(data, parent);
-                            // todo retrieve data //
-                            if (elementsOrDataWithElement != undefined && elementsOrDataWithElement.length > 0) {
-                                const elementsWithData = [];
-                                const isElement = app.utility.isElement;
-                                for (let i = 0; i < elementsOrDataWithElement.length; i++) {
-                                    const elementOrDataWithElement = elementsOrDataWithElement[i];
-                                    if (isElement(elementOrDataWithElement)) {
-                                        parent.append(elementOrDataWithElement);
-                                        elementsWithData[elementsWithData.length] = {element: elementOrDataWithElement, data: data};
+                            let elementsOrDataWithElement = content(data, parent);
 
-                                    } else if (typeof(elementsOrDataWithElement) == "object" && isElement(elementOrDataWithElement.element)) {
-                                        elementsWithData[elementsWithData.length] = elementOrDataWithElement;
-                                        parent.append(elementOrDataWithElement.element);
-                                    }
+
+                            if (typeof(elementsOrDataWithElement) == "object") {
+
+                                // If it is just a single element, wrap it with an array.
+                                if (!Array.isArray(elementsOrDataWithElement)) {
+                                    elementsOrDataWithElement = [elementsOrDataWithElement];
                                 }
-                                return elementsWithData;
+
+                                if (elementsOrDataWithElement.length > 0) {
+                                    const elementsWithData = [];
+                                    const isElement = app.utility.isElement;
+                                    for (let i = 0; i < elementsOrDataWithElement.length; i++) {
+                                        const elementOrDataWithElement = elementsOrDataWithElement[i];
+                                        if (isElement(elementOrDataWithElement)) {
+                                            parent.append(elementOrDataWithElement);
+                                            elementsWithData[elementsWithData.length] = {element: elementOrDataWithElement, data: data};
+
+                                        } else if (typeof(elementsOrDataWithElement) == "object") {
+                                            if (elementOrDataWithElement.element !== undefined) { // if DEFINED
+                                                if (isElement(elementOrDataWithElement.element)) {
+                                                    elementsWithData[elementsWithData.length] = elementOrDataWithElement;
+                                                    parent.append(elementOrDataWithElement.element);
+                                                }
+                                            } else { // Just only for data
+
+                                                elementOrDataWithElement.element = parent;
+                                                elementsWithData[elementsWithData.length] = elementOrDataWithElement;
+                                            }
+                                        }
+                                    }
+                                    return elementsWithData;
+                                }
                             }
                             return false;
                         })();
@@ -44,7 +61,7 @@ const templateEngine = (function () {
                         return (function () {
                             // A wrapper is required to make sure that injected html code is removed. I do not prefer to use this `case`. But might be handy if it comes to that.
                             const newElement = document.createTextNode("div");
-                            newElement.innerHTML += content
+                            newElement.innerHTML += content;
                             newElement.setAttribute("template-engine-wrapper", true);
                             parent.append(newElement);
                             return [{element: newElement, data: data}];
