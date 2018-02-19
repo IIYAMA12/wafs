@@ -182,6 +182,53 @@ Result: (SubRoot elements)
 <section></section>
 ```
 
+## Advanced
+
+### Query selection support
+
+```HTML
+<section id="test">
+</section>
+```
+
+```JS
+[
+    {
+        query: "#test",
+        content: "p",
+        type: "tag",
+        child: {
+            content: "I have been found!",
+            type:"text"
+        }
+    }
+]
+```
+
+Result:
+```HTML
+<section id="test">
+    <p>I have been found!</p>
+</section>
+```
+
+All queries will be applied to a querySelectorAll function. Keep in mind that the queries do start from the parent.
+Queries that do start with `combinators` are also supported:
+
+```CSS
+> p {
+
+}
+
++ article {
+
+}
+
+~ article {
+
+}
+```
+
 ### Functions
 Using functions makes creating content much more easy. This function will be called when the template is processed.
 In the first iteration dynamic data has to be placed on top of the template. This will change in the future.

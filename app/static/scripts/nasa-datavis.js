@@ -127,21 +127,15 @@ const datavisComponent = (function (datavisCanvas) {
                 templateEngine.render(
                 [
                     {
+                        query: "#test",
                         content: "ul",
                         type: "tag",
                         child: {
-                            content: function (data) {
-                                const elements = [];
-                                for (let i = 0; i < data.length; i++) {
-                                    elements[elements.length] = document.createElement("li");
-                                }
-                                return elements;
-                            },
-                            type: "function",
-                            data: ["item:1", "item:2", "item:3"]
+                            content: "I have been found!",
+                            type:"text"
                         }
                     }
-                ], document.getElementById("api-nasa-gov"));
+                ], document.body);
             }
 
 
