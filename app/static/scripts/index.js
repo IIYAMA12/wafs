@@ -1,7 +1,8 @@
+
 const developingStatus = true;
 
 const app = (function () {
-
+	'use strict';
 
 	const app = {
 
@@ -91,49 +92,47 @@ const app = (function () {
 
 							let localStorageData = localStorage.getItem("api-nasa");
 
-
 							if (localStorageData == undefined) {
 	                            var request = app.JSONHttpRequest.setup("api-nasa");
-	                            sectionData.httpRequestsById["api-nasa"] = request;
+								if (request != undefined) {
+		                            sectionData.httpRequestsById["api-nasa"] = request;
 
 
-	                            app.JSONHttpRequest.open(request, "GET", "https://api.nasa.gov/neo/rest/v1/feed?api_key=1NnMgn9RYxKvz0o2FDqdQ3poB6vtGreh8oLahlBy", true);
+		                            app.JSONHttpRequest.open(request, "GET", "https://api.nasa.gov/neo/rest/v1/feed?api_key=1NnMgn9RYxKvz0o2FDqdQ3poB6vtGreh8oLahlBy", true);
 
+									console.log("attach callback");
+									// attach callback
+		                            request.customData.callBack = (rawData) => {
+		                                const data = JSON.parse(rawData);
+		                                if (data != undefined) {
+		                                    let nearEarthObjects = data["near_earth_objects"];
 
-								// attach callback
-	                            request.customData.callBack = (rawData) => {
-	                                const data = JSON.parse(rawData);
-	                                if (data != undefined) {
-	                                    let nearEarthObjects = data["near_earth_objects"];
+		                                    for(let date in nearEarthObjects){
+		                                        const asteroids = nearEarthObjects[date];
+		                                        for (let i = 0; i < asteroids.length; i++) {
+		                                            const asteroid = asteroids[i];
+		                                            // remove one index level for the data at key close_approach_data.
+		                                            const closeApproachData = asteroid["close_approach_data"][0];
+		                                            asteroid["close_approach_data"] = closeApproachData;
+		                                        }
+		                                    }
 
-	                                    for(let date in nearEarthObjects){
-	                                        const asteroids = nearEarthObjects[date];
-	                                        for (let i = 0; i < asteroids.length; i++) {
-	                                            const asteroid = asteroids[i];
-	                                            // remove one index level for the data at key close_approach_data.
-	                                            const closeApproachData = asteroid["close_approach_data"][0];
-	                                            asteroid["close_approach_data"] = closeApproachData;
-	                                        }
-	                                    }
+											localStorage.setItem("api-nasa", JSON.stringify(nearEarthObjects));
+		                                    datavisComponent.load(nearEarthObjects);
+		                                }
+		                            }
 
-										localStorage.setItem("api-nasa", JSON.stringify(nearEarthObjects));
-	                                    datavisComponent.load(nearEarthObjects);
-	                                }
-	                            }
-
-
-								app.JSONHttpRequest.send(request);
+									app.JSONHttpRequest.send("api-nasa");
+								}
 							} else {
 								localStorageData = JSON.parse(localStorageData);
 								datavisComponent.load(localStorageData);
 							}
-
-
                         },
                         function (_, sectionData) {
+							console.log("render template");
                             const template = app.sections.template.get("nasa");
                             templateEngine.render(template, document.getElementById("api-nasa-gov"));
-
                         }
                     ],
                     httpRequestsById: {}
@@ -144,66 +143,90 @@ const app = (function () {
         JSONHttpRequest: {
 			setup (id) {
 
-                let httpRequest;
-                if (id != undefined && !this.getById(id) || id == undefined) {
-                    httpRequest = new XMLHttpRequest();
-
-					httpRequest.customData = {}; // all my additional data.
-
-					//
 
 
+                let httpRequest = new XMLHttpRequest();
 
+				httpRequest.customData = {}; // all my additional data.
 
-
-
-                    if (id != undefined) {
-                        this.httpRequestsById[id] = httpRequest;
-                        httpRequest.customData.id = id;
-                    }
-                    this.httpRequests[this.httpRequests.length] = httpRequest;
-                    httpRequest.addEventListener("load", this.loaded);
-                    httpRequest.addEventListener("progress", this.progress);
-                    httpRequest.addEventListener("error", this.error);
-                    httpRequest.addEventListener("abort", this.abort);
-                } else {
-                    httpRequest = this.getById(id);
+				// save by ID.
+                if (id != undefined) {
+					if (!this.getRequestsById(id)) {
+                    	this.httpRequestsById[id] = [httpRequest];
+					} else {
+						this.httpRequestsById[id][this.httpRequestsById[id].length] = httpRequest;
+					}
+                    httpRequest.customData.id = id;
                 }
+
+				// attach addEventListeners
+				this.addEventListeners(httpRequest);
+
 
                 return httpRequest != undefined ? httpRequest : false;
             },
 
+			// listening
+			addEventListeners (httpRequest) {
+				httpRequest.addEventListener("load", this.loaded);
+                httpRequest.addEventListener("progress", this.progress);
+                httpRequest.addEventListener("error", this.error);
+                httpRequest.addEventListener("abort", this.abort);
+				return true;
+			},
+
+			removeEventListeners (httpRequest) {
+				httpRequest.removeEventListener("load", this.loaded);
+				httpRequest.removeEventListener("progress", this.progress);
+				httpRequest.removeEventListener("error", this.error);
+				httpRequest.removeEventListener("abort", this.abort);
+				return true;
+			},
+
+			// open connection
             open () {
                 let httpRequest, id, method, url, a_sync, user, password;
                 // https://developer.mozilla.org/nl/docs/Web/JavaScript/Reference/Operatoren/Destructuring_assignment
 
                 if (typeof(arguments[0]) == "string") {
                     [id, method, url, a_sync, user, password] = arguments;
-                    httpRequest =  this.httpRequestsById[id];
+                    httpRequest =  this.getLatestRequestById(id);
                 } else {
                     [httpRequest, method, url, a_sync, user, password] = arguments;
                 }
                 return httpRequest.open(method, url, a_sync, user, password);
             },
 
+			// send
             send () { // http request || id
                 if (arguments[0] != undefined) {
                     // send it by direct http request or use an id to find it.
-                    const httpRequest = typeof(arguments[0]) == "string" ? this.httpRequestsById[arguments[0]] : arguments[0];
+                    const httpRequest = typeof(arguments[0]) == "string"
+						?
+							this.getLatestRequestById(arguments[0])
+						:
+							arguments[0];
+
                     if (httpRequest != undefined) {
 
-						httpRequest.customData.promiseData = {}
+						httpRequest.promiseData = {}
 
 						var httpRequestPromise = new Promise(function (resolve, reject) {
-							httpRequest.customData.promiseData.resolve = resolve;
-							httpRequest.customData.promiseData.reject = reject;
+							httpRequest.promiseData.resolve = resolve;
+							httpRequest.promiseData.reject = reject;
 						});
-						httpRequest.customData.promiseData.promise = httpRequestPromise;
+						httpRequest.promiseData.promise = httpRequestPromise;
 
 						httpRequestPromise.then(function (rawData) {
 							httpRequest.customData.callBack(rawData);
+
+							// Because the httpRequest remains to exist, we should remove the listeners.
+							app.JSONHttpRequest.removeEventListeners(httpRequest);
 						}).catch(function (result) { // Don't catch stupid fish...
 							console.log(result);
+
+							// Because the httpRequest remains to exist, we should remove the listeners.
+							app.JSONHttpRequest.removeEventListeners(httpRequest);
 						});
 
                         return httpRequest.send();
@@ -211,9 +234,17 @@ const app = (function () {
                 }
             },
 
-            getById (id) {
+            getRequestsById (id) {
                 return this.httpRequestsById[id] != undefined ? this.httpRequestsById[id] : false;
             },
+
+			getLatestRequestById (id) {
+				const requests = this.getRequestsById(id);
+				if (requests != undefined && requests.length > 0) {
+					return requests[requests.length - 1];
+				}
+				return false;
+			},
 
             // event functions
             loaded: (e) => {
@@ -221,18 +252,18 @@ const app = (function () {
                 const rawData = source.response;
                 if (rawData != undefined) {
                     if (source.customData != undefined && source.customData.callBack != undefined) {
-						source.customData.promiseData.resolve(rawData);
+						source.promiseData.resolve(rawData);
 						return;
                     }
                 }
-				source.customData.promiseData.reject("http request warning: The received the data is corrupted, from ID: " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
+				source.promiseData.reject("http request warning: The received the data is corrupted, from ID: " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
             },
             error: (e) =>{
 				const source = e.target;
-				source.customData.promiseData.reject("http request error: Can't receive the data, from ID: " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
+				source.promiseData.reject("http request error: Can't receive the data, from ID: " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
             },
             abort: (e) => {
-				source.customData.promiseData.reject("http request abort: From ID " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
+				source.promiseData.reject("http request abort: From ID " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
             },
             progress: (e) => {
 
@@ -246,7 +277,6 @@ const app = (function () {
 
             // data
             httpRequestsById: {},
-            httpRequests: []
         },
 
 		utility: { // https://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
