@@ -213,7 +213,7 @@ Result:
 ```
 
 All queries will be applied to a querySelectorAll function. Keep in mind that the queries do start from the parent.
-Queries that do start with `combinators` are also supported:
+Queries that start with `combinators` are also supported:
 
 ```CSS
 > p {
