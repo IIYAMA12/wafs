@@ -2,6 +2,8 @@
 
 First of al, this really doesn't like a template engine. Neither it will do just that. It is for you to judge what this suppose to be.
 
+[Source code](https://github.com/IIYAMA12/wafs/blob/master/app/static/scripts/template-engine.js)
+
 Lets get started with what it can do. (basics)
 
 ## Basics
@@ -256,6 +258,13 @@ Result:
 <section></section>
 ```
 
+The keyword `[use-data]` is used by the `text` and `tag` type to use the passed data.
+```JS
+"[use-data]"
+```
+
+
+
 ### Passing data to a text child
 If you want to pass data to an element, then you have to send an object which contains the element as well as the data you want to pass.
 
@@ -263,10 +272,6 @@ If you want to pass data to an element, then you have to send an object which co
 {element: DOM_element, data: data}
 ```
 
-The keyword `[use-data]` is used by the `text` and `tag` type to use the passed data.
-```JS
-"[use-data]"
-```
 
 ```JS
 [
@@ -380,3 +385,5 @@ content: function (data, parent) {
     }
 ]
 ```
+
+[Source code](https://github.com/IIYAMA12/wafs/blob/master/app/static/scripts/template-engine.js)

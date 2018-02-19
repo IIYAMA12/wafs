@@ -203,10 +203,8 @@ const templateEngine = (function () {
                                         if (instructionChildren != undefined && instructionChildren.length > 0) {
 
                                             // All new instructions apply to new elements.
-                                            const apply = templateEngine.apply; // << optimisation
-
                                             for (let j = 0; j < instructionChildren.length; j++) {
-                                                apply(instructionChildren[j], newElement, newElementWithData.data);
+                                                templateEngine.apply(instructionChildren[j], newElement, newElementWithData.data);
                                             }
                                         }
                                     }
