@@ -131,13 +131,20 @@ For loading a template, you have to call the render method of the templateEngine
 ```JS
     templateEngine.render(array template, Note startAtElement [, mix data]);
 ```
+Required Arguments
+* `template` A array value which contains the template.
+* `startAtElement` A Note value which contains a dom element, where the engine will start building in.
+
+Optional Arguments
+* `data` A variable of any type, which you want to use in the template.
 
 ```JS
+    // The template
     const template = [
         // ...
     ];
 
-    // This is where
+    // Inside this element is where the template engine will start building up.
     const startAtElement = document.getElementById("id");
 
     // Add data to the root. (Note: the data which is flowing inside of the system is the original data. Make a copy of it, if you are going to mutate it inside.)
