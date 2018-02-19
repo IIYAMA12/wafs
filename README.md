@@ -211,6 +211,9 @@ The next step is to detect if the URL hash has been changed. We can use the even
 ```
 [Template engine documentation](https://iiyama12.github.io/wafs/template-engine-doc)
 
+
+[https://dmitripavlutin.com/6-ways-to-declare-javascript-functions/](Different function declarations)
+
 ## Experiment examples
 * [Experiment prototype](https://iiyama12.github.io/wafs/experimental_examples/prototype)
 * [Experiment promise](https://iiyama12.github.io/wafs/experimental_examples/promise)
