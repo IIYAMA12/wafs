@@ -5,13 +5,13 @@ const app = (function () {
 
 	const app = {
 
-		init () {
+		init: function () {
 			this.routes.init();
 		},
 
         // Takes care of the routes.
 		routes: {
-			init () {
+			init: function () {
 
 
 				// navigate directly when visiting the page without the navigation. Else it might get bugged, because the hash isn't triggered when it is the same url.
@@ -32,32 +32,32 @@ const app = (function () {
 				});
 			},
 
-            getCurrentRoute () {
+            getCurrentRoute: function () {
                 return location.href.split('#')[1];
             }
 		},
 
         // pages: Shows the page and decides the dynamic content.
 		sections: {
-			toggle (route) {
-				const sectionElements = document.querySelectorAll("body > *");
+			toggle: function (route) {
+				const sections = document.querySelectorAll("body > *");
 
 
 
                 if (this.data[route]) {
-                    for (let index = 0; index < sectionElements.length; index++) {
-                        const element = sectionElements[index];
+                    for (let index = 0; index < sections.length; index++) {
+                        const element = sections[index];
                         element.classList.add("hidden");
                     }
 
-                    this.startSection(this.data[route]);
+                    this.activateStartFunction(this.data[route]);
                     document.getElementById(route).classList.remove("hidden");
                 }
 
 
 			},
             // data is not yet used, but will be used later on.
-            startSection (sectionData) {
+            activateStartFunction: function (sectionData) {
                 var init = sectionData.init;
                 if (init != undefined) {
                     init();
@@ -71,10 +71,10 @@ const app = (function () {
             },
             template: {
                 collection: {},
-                add (id, template) {
+                add: function (id, template) {
                     this.collection[id] = template;
                 },
-                get (id) {
+                get: function (id) {
                     return this.collection[id];
                 }
             },
@@ -98,9 +98,9 @@ const app = (function () {
 
 
 	                            app.JSONHttpRequest.open(request, "GET", "https://api.nasa.gov/neo/rest/v1/feed?api_key=1NnMgn9RYxKvz0o2FDqdQ3poB6vtGreh8oLahlBy", true);
+	                            app.JSONHttpRequest.send(request);
 
 
-								// attach callback
 	                            request.customData.callBack = (rawData) => {
 	                                const data = JSON.parse(rawData);
 	                                if (data != undefined) {
@@ -120,9 +120,6 @@ const app = (function () {
 	                                    datavisComponent.load(nearEarthObjects);
 	                                }
 	                            }
-
-
-								app.JSONHttpRequest.send(request);
 							} else {
 								localStorageData = JSON.parse(localStorageData);
 								datavisComponent.load(localStorageData);
@@ -142,20 +139,15 @@ const app = (function () {
 		},
 
         JSONHttpRequest: {
-			setup (id) {
-
+			// setup(
+			//
+			// ){},
+            setup: function (id) {
                 let httpRequest;
                 if (id != undefined && !this.getById(id) || id == undefined) {
                     httpRequest = new XMLHttpRequest();
 
-					httpRequest.customData = {}; // all my additional data.
-
-					//
-
-
-
-
-
+                    httpRequest.customData = {}; // all my additional data.
 
                     if (id != undefined) {
                         this.httpRequestsById[id] = httpRequest;
@@ -169,11 +161,11 @@ const app = (function () {
                 } else {
                     httpRequest = this.getById(id);
                 }
-
+                console.log("requests:", this.httpRequests.length);
                 return httpRequest != undefined ? httpRequest : false;
             },
 
-            open () {
+            open: function () {
                 let httpRequest, id, method, url, a_sync, user, password;
                 // https://developer.mozilla.org/nl/docs/Web/JavaScript/Reference/Operatoren/Destructuring_assignment
 
@@ -186,32 +178,17 @@ const app = (function () {
                 return httpRequest.open(method, url, a_sync, user, password);
             },
 
-            send () { // http request || id
+            send: function () { // http request || id
                 if (arguments[0] != undefined) {
                     // send it by direct http request or use an id to find it.
                     const httpRequest = typeof(arguments[0]) == "string" ? this.httpRequestsById[arguments[0]] : arguments[0];
                     if (httpRequest != undefined) {
-
-						httpRequest.customData.promiseData = {}
-
-						var httpRequestPromise = new Promise(function (resolve, reject) {
-							httpRequest.customData.promiseData.resolve = resolve;
-							httpRequest.customData.promiseData.reject = reject;
-						});
-						httpRequest.customData.promiseData.promise = httpRequestPromise;
-
-						httpRequestPromise.then(function (rawData) {
-							httpRequest.customData.callBack(rawData);
-						}).catch(function (result) { // Don't catch stupid fish...
-							console.log(result);
-						});
-
                         return httpRequest.send();
                     }
                 }
             },
 
-            getById (id) {
+            getById: function (id) {
                 return this.httpRequestsById[id] != undefined ? this.httpRequestsById[id] : false;
             },
 
@@ -221,18 +198,15 @@ const app = (function () {
                 const rawData = source.response;
                 if (rawData != undefined) {
                     if (source.customData != undefined && source.customData.callBack != undefined) {
-						source.customData.promiseData.resolve(rawData);
-						return;
+                        source.customData.callBack(rawData);
                     }
                 }
-				source.customData.promiseData.reject("http request warning: The received the data is corrupted, from ID: " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
             },
             error: (e) =>{
-				const source = e.target;
-				source.customData.promiseData.reject("http request error: Can't receive the data, from ID: " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
+
             },
             abort: (e) => {
-				source.customData.promiseData.reject("http request abort: From ID " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
+
             },
             progress: (e) => {
 
@@ -250,7 +224,7 @@ const app = (function () {
         },
 
 		utility: { // https://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
-            isElement (element) {
+            isElement: function (element) {
                 return element instanceof Element;
             }
         }
