@@ -1,11 +1,22 @@
+:root {
+  --main-color: rgb(0, 50, 160);
+}
+
+
+
+button, a {
+    cursor: pointer;
+}
+
 body > *, body, html {
-    min-height: 100vh;
+    min-height: calc(100vh - 3rem);
     width: 100vw;
     overflow-x: hidden; /* to prevent problems with overflow content */
 }
 
 body {
-    background-color: rgb(250, 250, 250);
+    background-color: rgb(240, 240, 240);
+    margin-top: 3rem;
 }
 
 body > * {
@@ -16,6 +27,37 @@ body > * {
     background-color: white;
 }
 
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 3rem;
+    background-color: black;
+    z-index: 100;
+}
+header [href="#main-nav"] {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: inherit;
+    line-height: 1rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    color: inherit;
+    text-decoration: none;
+}
+
+header [href="#main-nav"]:hover {
+    background-color: var(--main-color);
+}
+
+header {
+    color: white;
+}
+
+
 nav a {
     text-decoration: none;
     height: 3rem;
@@ -24,6 +66,11 @@ nav a {
     text-align: center;
     border-top: 1px solid rgb(150, 150, 150);
     color: rgb(70, 70, 70);
+}
+
+nav a:hover {
+    background-color: var(--main-color);
+    color: white;
 }
 
 nav li:first-child a {
@@ -36,17 +83,16 @@ nav li:first-child a {
 }
 
 h1, h2, h3, h4, h5 {
-    text-align: center;
     font-family: 'Josefin Slab', serif;
+}
+h2, h3, h4, h5 {
+    text-align: center;
 }
 
 h1 {
-    font-size: 2rem;
-    height: 2rem;
-    border-bottom: 2px solid rgb(150, 150, 150);
-    margin-bottom: 1rem;
-    padding: 1rem;
-
+    font-size: 1.8rem;
+    line-height: 3rem;
+    margin-left: 2rem;
 }
 
 h2 {
@@ -88,4 +134,24 @@ tr th {
 tr td {
     width: 50%;
     overflow: scroll;
+}
+
+#page-error p {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    left: 0;
+    top: 0;
+    line-height: 100vh;
+    text-align: center;
+}
+
+#startscreen > section:first-of-type {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#startscreen > section:first-of-type article {
+
+    flex-shrink: 1;
 }

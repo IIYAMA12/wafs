@@ -230,8 +230,7 @@ Queries that start with `combinators` are also supported:
 ```
 
 ### Functions
-Using functions makes creating content much more easy. This function will be called when the template is processed.
-In the first iteration dynamic data has to be placed on top of the template. This will change in the future.
+Using functions makes creating content much more easy. This function will be called when the template is rendered.
 
 ```JS
 [
@@ -320,7 +319,7 @@ The keyword `[use-data]` is used by the `text` and `tag` type to use the passed 
 
 
 ### Passing data to a text child
-If you want to pass data to an element, then you have to send an object which contains the element as well as the data you want to pass.
+If you want to pass data to a child or children, then you have to `create an object` which contains the element as well as the data you want to pass.
 
 ```JS
 {element: DOM_element, data: data}

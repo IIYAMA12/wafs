@@ -1,13 +1,21 @@
 
 const developingStatus = true;
 
+
 const app = (function () {
 	'use strict';
+
+
+
+
+
 
 	const app = {
 
 		init () {
+			this.JSONHttpRequest.init(); // order matters!
 			this.routes.init();
+			this.sections.init();
 		},
 
         // Takes care of the routes.
@@ -27,9 +35,7 @@ const app = (function () {
 				*/
 				window.addEventListener("hashchange", (e) => {
 					const sectionName = location.hash.split('#')[1];
-
 					app.sections.toggle(sectionName);
-
 				});
 			},
 
@@ -40,33 +46,107 @@ const app = (function () {
 
         // pages: Shows the page and decides the dynamic content.
 		sections: {
+			init () {
+				// ///////////////////////// //
+				// Experimental custom event //
+
+				window.addEventListener('onChangePage', function (e) {
+					// ... experimental!!!
+				}, false);
+
+				//                           //
+				///////////////////////////////
+			},
 			toggle (route) {
 				const sectionElements = document.querySelectorAll("body > *");
 
 
 
-                if (this.data[route]) {
-                    for (let index = 0; index < sectionElements.length; index++) {
-                        const element = sectionElements[index];
-                        element.classList.add("hidden");
-                    }
 
-                    this.startSection(this.data[route]);
-                    document.getElementById(route).classList.remove("hidden");
+				console.log("toggle", route);
+                if (this.data[route]) {
+					const sectionElement = document.getElementById(route);
+					if (sectionElement != undefined) {
+
+						// hide all sections
+						for (let index = 0; index < sectionElements.length; index++) {
+							const element = sectionElements[index];
+							element.classList.add("hidden");
+						}
+
+
+						const oldRouteData = this.oldRouteData;
+
+						// end functions
+						if (oldRouteData != undefined) {
+							this.sectionFunctions(oldRouteData.data, "endFunctions");
+						}
+						// start functions
+	                    this.sectionFunctions(this.data[route], "startFunctions");
+
+
+						this.oldRouteData = {route: route, data: this.data[route], element: sectionElement};
+
+	                    sectionElement.classList.remove("hidden");
+
+						// ///////////////////////// //
+						// Experimental custom event //
+
+						const changePageEvent = new CustomEvent('onChangePage',
+							{
+								detail: {
+									route: route,
+									oldRoute: this.oldRouteData.route,
+									data: this.data[route],
+									oldData: this.oldRouteData.data,
+									oldElement: sectionElement
+								}
+							}
+						);
+						window.dispatchEvent(changePageEvent);
+
+						//                           //
+						///////////////////////////////
+
+						return true;
+					}
                 }
 
+				this.error.goToPage(404);
 
+				return false;
 			},
-            // data is not yet used, but will be used later on.
-            startSection (sectionData) {
-                var init = sectionData.init;
+			error: {
+				goToPage(code) {
+					const sectionElements = document.querySelectorAll("body > *");
+
+					// hide all sections
+					for (let index = 0; index < sectionElements.length; index++) {
+						const element = sectionElements[index];
+						element.classList.add("hidden");
+					}
+					const section = document.getElementById("page-error");
+					section.classList.remove("hidden");
+					section.getElementsByTagName("p").textContent = code + " : " + (this.errorMessages[code] != undefined ? this.errorMessages[code] : " Something went wrong!");
+				},
+				errorMessages: {
+					[404]: "Nothing here!"
+				}
+			},
+            // Data is not yet used, but will be used later on.
+            sectionFunctions (sectionData, typeOfFunctions) {
+
+                const init = sectionData.init;
                 if (init != undefined) {
                     init();
+					delete sectionData.init;
                 }
-                var startFunctions = sectionData.startFunctions;
-                if (startFunctions != undefined) {
-                    for (let i = 0; i < startFunctions.length; i++) {
-                        startFunctions[i](this, sectionData);
+
+                const functions = sectionData[typeOfFunctions];
+
+                if (functions != undefined) {
+                    for (let i = 0; i < functions.length; i++) {
+                        functions[i](this, sectionData);
                     }
                 }
             },
@@ -81,22 +161,63 @@ const app = (function () {
             },
             data: {
                 ["startscreen"] : {
+					startFunctions: [
+						function () {
+							let localStorageData = localStorage.getItem("api-nasa");
 
+							if (localStorageData == undefined) {
+								const request = app.JSONHttpRequest.setup("api-nasa");
+								if (request != undefined) {
+
+									app.JSONHttpRequest.open(request, "GET", "https://api.nasa.gov/neo/rest/v1/feed?api_key=1NnMgn9RYxKvz0o2FDqdQ3poB6vtGreh8oLahlBy", true);
+
+									console.log("attach callback");
+									// attach callback
+									request.customData.callBack = (rawData) => {
+										const data = JSON.parse(rawData);
+										if (data != undefined) {
+											let nearEarthObjects = data["near_earth_objects"];
+
+											for(let date in nearEarthObjects){
+												const asteroids = nearEarthObjects[date];
+												for (let i = 0; i < asteroids.length; i++) {
+													const asteroid = asteroids[i];
+													// remove one index level for the data at key close_approach_data.
+													const closeApproachData = asteroid["close_approach_data"][0];
+													asteroid["close_approach_data"] = closeApproachData;
+												}
+											}
+
+											localStorage.setItem("api-nasa", JSON.stringify(nearEarthObjects));
+											gridItemsContainer.load(nearEarthObjects);
+										}
+									}
+
+									app.JSONHttpRequest.send("api-nasa");
+								}
+							} else {
+								localStorageData = JSON.parse(localStorageData);
+								gridItemsContainer.load(localStorageData);
+							}
+						}
+					],
+					endFunctions: [
+						function () {
+							gridItemsContainer.unload();
+						}
+					]
                 },
                 ["main-nav"] : {
 
                 },
-                ["api-nasa-gov"] : {
+                ["nasa-slideshow"] : {
                     startFunctions: [
-                        function (_, sectionData) {
-
+                        function () {
 							let localStorageData = localStorage.getItem("api-nasa");
 
 							if (localStorageData == undefined) {
-	                            var request = app.JSONHttpRequest.setup("api-nasa");
+	                            const request = app.JSONHttpRequest.setup("api-nasa");
 								if (request != undefined) {
-		                            sectionData.httpRequestsById["api-nasa"] = request;
-
 
 		                            app.JSONHttpRequest.open(request, "GET", "https://api.nasa.gov/neo/rest/v1/feed?api_key=1NnMgn9RYxKvz0o2FDqdQ3poB6vtGreh8oLahlBy", true);
 
@@ -118,7 +239,7 @@ const app = (function () {
 		                                    }
 
 											localStorage.setItem("api-nasa", JSON.stringify(nearEarthObjects));
-		                                    datavisComponent.load(nearEarthObjects);
+		                                    slideshowContainer.load(nearEarthObjects);
 		                                }
 		                            }
 
@@ -126,23 +247,35 @@ const app = (function () {
 								}
 							} else {
 								localStorageData = JSON.parse(localStorageData);
-								datavisComponent.load(localStorageData);
+								slideshowContainer.load(localStorageData);
 							}
-                        },
-                        function (_, sectionData) {
-							console.log("render template");
-                            const template = app.sections.template.get("nasa");
-                            templateEngine.render(template, document.getElementById("api-nasa-gov"));
                         }
                     ],
-                    httpRequestsById: {}
+					endFunctions: [
+						function () {
+							slideshowContainer.unload();
+						}
+					]
                 }
             }
 		},
 
         JSONHttpRequest: {
+			init () {
+				XMLHttpRequest.prototype.addEventListeners = function () {
+					this.addEventListener("load", app.JSONHttpRequest.loaded);
+					this.addEventListener("progress", app.JSONHttpRequest.progress);
+					this.addEventListener("error", app.JSONHttpRequest.error);
+					this.addEventListener("abort", app.JSONHttpRequest.abort);
+				};
+				XMLHttpRequest.prototype.removeEventListeners = function () {
+					this.addEventListener("load", app.JSONHttpRequest.loaded);
+					this.addEventListener("progress", app.JSONHttpRequest.progress);
+					this.addEventListener("error", app.JSONHttpRequest.error);
+					this.addEventListener("abort", app.JSONHttpRequest.abort);
+				};
+			},
 			setup (id) {
-
 
 
                 let httpRequest = new XMLHttpRequest();
@@ -160,28 +293,10 @@ const app = (function () {
                 }
 
 				// attach addEventListeners
-				this.addEventListeners(httpRequest);
-
+				httpRequest.addEventListeners();
 
                 return httpRequest != undefined ? httpRequest : false;
             },
-
-			// listening
-			addEventListeners (httpRequest) {
-				httpRequest.addEventListener("load", this.loaded);
-                httpRequest.addEventListener("progress", this.progress);
-                httpRequest.addEventListener("error", this.error);
-                httpRequest.addEventListener("abort", this.abort);
-				return true;
-			},
-
-			removeEventListeners (httpRequest) {
-				httpRequest.removeEventListener("load", this.loaded);
-				httpRequest.removeEventListener("progress", this.progress);
-				httpRequest.removeEventListener("error", this.error);
-				httpRequest.removeEventListener("abort", this.abort);
-				return true;
-			},
 
 			// open connection
             open () {
@@ -211,7 +326,7 @@ const app = (function () {
 
 						httpRequest.promiseData = {}
 
-						var httpRequestPromise = new Promise(function (resolve, reject) {
+						const httpRequestPromise = new Promise(function (resolve, reject) {
 							httpRequest.promiseData.resolve = resolve;
 							httpRequest.promiseData.reject = reject;
 						});
@@ -221,12 +336,12 @@ const app = (function () {
 							httpRequest.customData.callBack(rawData);
 
 							// Because the httpRequest remains to exist, we should remove the listeners.
-							app.JSONHttpRequest.removeEventListeners(httpRequest);
+							httpRequest.removeEventListeners();
 						}).catch(function (result) { // Don't catch stupid fish...
 							console.log(result);
 
 							// Because the httpRequest remains to exist, we should remove the listeners.
-							app.JSONHttpRequest.removeEventListeners(httpRequest);
+							httpRequest.removeEventListeners();
 						});
 
                         return httpRequest.send();
@@ -252,7 +367,9 @@ const app = (function () {
                 const rawData = source.response;
                 if (rawData != undefined) {
                     if (source.customData != undefined && source.customData.callBack != undefined) {
-						source.promiseData.resolve(rawData);
+						if (source.promiseData != undefined) {
+							source.promiseData.resolve(rawData);
+						}
 						return;
                     }
                 }
@@ -260,15 +377,20 @@ const app = (function () {
             },
             error: (e) =>{
 				const source = e.target;
-				source.promiseData.reject("http request error: Can't receive the data, from ID: " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
-            },
+				if (source.promiseData != undefined) {
+					source.promiseData.reject("http request error: Can't receive the data, from ID: " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
+				}
+			},
             abort: (e) => {
-				source.promiseData.reject("http request abort: From ID " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
-            },
+				const source = e.target;
+				if (source.promiseData != undefined) {
+					source.promiseData.reject("http request abort: From ID " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
+				}
+			},
             progress: (e) => {
 
                 if (e.lengthComputable) {
-                    var percentComplete = e.loaded / e.total;
+                    const percentComplete = e.loaded / e.total;
                     console.log("progress", percentComplete);
                 } else {
                     console.log("no progress");

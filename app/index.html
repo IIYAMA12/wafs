@@ -12,22 +12,25 @@
 </head>
 <body>
     <script src="https://d3js.org/d3.v4.min.js"></script>
-    <nav id="main-nav">
-        <h1>Navigation</h1>
+    <nav id="main-nav" class="hidden">
+        <header><h1>Navigation</h1></header>
         <ul>
             <li><a href="#startscreen">Startscreen</a></li>
-            <li><a href="#api-nasa-gov">API NASA</a></li>
+            <li><a href="#nasa-slideshow">NASA slideshow</a></li>
         </ul>
     </nav>
-    <section id="startscreen" class="hidden">
-        <h1>Startscreen</h1>
-        <a href="#main-nav">Navigation</a>
+    <section id="startscreen">
+        <header><h1>Startscreen</h1><a href="#main-nav">Navigation</a></header>
+        <section>
+
+        </section>
     </section>
-    <section id="api-nasa-gov" class="hidden">
-        <h1>API NASA</h1>
+    <section id="nasa-slideshow" class="hidden">
+        <header><h1>NASA slideshow</h1><a href="#main-nav">Navigation</a></header>
+
         <svg viewbox="0 0 1000 1000">
             <g></g>
-            <image x="-80" y="-80" height="160" width="160" href="static/images/earth.svg"/>
+            <g><image x="-160" y="-160" height="320" width="320" href="static/images/earth.svg"/></g>
         </svg>
 
         <h2></h2>
@@ -36,16 +39,21 @@
             <tbody>
             </tbody>
         </table>
-        <a href="#main-nav">Navigation</a>
+    </section>
+    <section id="page-error" class="hidden">
+        <header><h1>Leave NOW! ;@</h1><a href="#main-nav">Navigation</a></header>
+        <p>Nothing here!</p>
     </section>
 
 
     <script src="static/scripts/template-engine.js"></script>
-    <script src="static/scripts/nasa-datavis.js"></script>
+    <script src="static/scripts/slideshow.js"></script>
+    <script src="static/scripts/grid-items.js"></script>
     <script src="static/scripts/index.js"></script>
 
-    <script src="static/scripts/templates/nasa.js"></script>
-
+    <script src="static/scripts/templates/slideshow-template.js"></script>
+    <script src="static/scripts/templates/items-template.js"></script>
+    <script src="static/scripts/development.js"></script>
 
 </body>
 </html>
