@@ -2,11 +2,13 @@ const templateEngine = (function () {
     const templateEngine = {
         render: function (template, parentElement, data) {
             if (template != undefined && template.length > 0) {
+                const newFragment = document.createDocumentFragment();
                 const apply = this.apply; // << optimisation
                 for (let i = 0; i < template.length; i++) {
                     template[i].subRoot = true; // this is for cutting the dom tree only at the bottom.
-                    apply(template[i], parentElement, data);
+                    apply(template[i], newFragment, data);
                 }
+                parentElement.append(newFragment);
             }
         },
         addContent: function (parent, type, content, data) {
@@ -177,6 +179,8 @@ const templateEngine = (function () {
                         // collection of all elements. The bottom layer of the element will be used to cut off.
                         instruction.elements = [];
 
+                        const apply = templateEngine.apply; // << optimisation
+
                         // these are the elements from the query all selection
                         for (let i = 0; i < parentElements.length; i++) {
                             const parentElement = parentElements[i];
@@ -204,7 +208,7 @@ const templateEngine = (function () {
 
                                             // All new instructions apply to new elements.
                                             for (let j = 0; j < instructionChildren.length; j++) {
-                                                templateEngine.apply(instructionChildren[j], newElement, newElementWithData.data);
+                                                apply(instructionChildren[j], newElement, newElementWithData.data);
                                             }
                                         }
                                     }
