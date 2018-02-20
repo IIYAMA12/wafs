@@ -27,6 +27,8 @@ const app = (function () {
 				let sectionName = this.getCurrentRoute();
 				if (sectionName != undefined) {
 					app.sections.toggle(sectionName);
+				} else {
+					app.sections.toggle("startscreen");
 				}
 
 				/*
@@ -63,7 +65,7 @@ const app = (function () {
 
 
 
-				console.log("toggle", route);
+
                 if (this.data[route]) {
 					const sectionElement = document.getElementById(route);
 					if (sectionElement != undefined) {
@@ -163,7 +165,7 @@ const app = (function () {
                 ["startscreen"] : {
 					startFunctions: [
 						function () {
-							let localStorageData = localStorage.getItem("api-nasa");
+							const localStorageData = app.localData.get("api-nasa", "JSON");
 
 							if (localStorageData == undefined) {
 								const request = app.JSONHttpRequest.setup("api-nasa");
@@ -171,7 +173,7 @@ const app = (function () {
 
 									app.JSONHttpRequest.open(request, "GET", "https://api.nasa.gov/neo/rest/v1/feed?api_key=1NnMgn9RYxKvz0o2FDqdQ3poB6vtGreh8oLahlBy", true);
 
-									console.log("attach callback");
+
 									// attach callback
 									request.customData.callBack = (rawData) => {
 										const data = JSON.parse(rawData);
@@ -187,8 +189,8 @@ const app = (function () {
 													asteroid["close_approach_data"] = closeApproachData;
 												}
 											}
-
-											localStorage.setItem("api-nasa", JSON.stringify(nearEarthObjects));
+											console.log("nearEarthObjects", nearEarthObjects);
+											app.localData.set("api-nasa", nearEarthObjects, "JSON");
 											gridItemsContainer.load(nearEarthObjects);
 										}
 									}
@@ -196,7 +198,6 @@ const app = (function () {
 									app.JSONHttpRequest.send("api-nasa");
 								}
 							} else {
-								localStorageData = JSON.parse(localStorageData);
 								gridItemsContainer.load(localStorageData);
 							}
 						}
@@ -211,10 +212,10 @@ const app = (function () {
 
                 },
                 ["nasa-slideshow"] : {
-                    startFunctions: [
-                        function () {
-							let localStorageData = localStorage.getItem("api-nasa");
 
+                    startFunctions: [
+                        function (_, sectionData) {
+							const localStorageData = app.localData.get("api-nasa", "JSON");
 							if (localStorageData == undefined) {
 	                            const request = app.JSONHttpRequest.setup("api-nasa");
 								if (request != undefined) {
@@ -237,8 +238,8 @@ const app = (function () {
 		                                            asteroid["close_approach_data"] = closeApproachData;
 		                                        }
 		                                    }
-
-											localStorage.setItem("api-nasa", JSON.stringify(nearEarthObjects));
+											console.log(nearEarthObjects);
+											app.localData.set("api-nasa", nearEarthObjects, "JSON");
 		                                    slideshowContainer.load(nearEarthObjects);
 		                                }
 		                            }
@@ -246,7 +247,7 @@ const app = (function () {
 									app.JSONHttpRequest.send("api-nasa");
 								}
 							} else {
-								localStorageData = JSON.parse(localStorageData);
+
 								slideshowContainer.load(localStorageData);
 							}
                         }
@@ -400,7 +401,35 @@ const app = (function () {
             // data
             httpRequestsById: {},
         },
+		localData: {
+			get (key, parser) {
+				let localStorageData;
+				if (this.data[key] != undefined) {
+					localStorageData = this.data[key];
+				} else {
+					localStorageData = localStorage.getItem(key);
+					if (parser == "JSON") {
+						localStorageData = JSON.parse(localStorageData);
+					}
+					// Store in the direct memory as well
+					this.data[key] = localStorageData;
+				};
+				return localStorageData;
+			},
+			set (key, item, parser) {
 
+				this.data[key] = item;
+				
+				if (parser == "JSON") {
+					item = JSON.stringify(item);
+				}
+				localStorage.setItem(key, item);
+
+
+				return true;
+			},
+			data: {}
+		},
 		utility: { // https://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
             isElement (element) {
                 return element instanceof Element;
