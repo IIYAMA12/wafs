@@ -20,3 +20,8 @@ const app = (function () {
 
     return app;
 })();
+
+
+if (developingStatus) {
+	// templateEngine.render(, document.body);
+}
