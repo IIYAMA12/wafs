@@ -3,19 +3,35 @@ const templateEngine = (function () {
         render: function (template, parentElement, data) {
             if (template != undefined && template.length > 0) {
 
-                // make a new fragment
-                const newFragment = document.createDocumentFragment();
+                // Two new fragments. It requires two of them to use connectors directly on elements.
+
+
+
 
                 const apply = this.apply; // << optimisation
 
                 // Execute the apply function for every instruction
                 for (let i = 0; i < template.length; i++) {
-                    template[i].subRoot = true; // this is for cutting the dom tree only at the bottom.
-                    apply(template[i], newFragment, data);
-                }
+                    // const parentFragment = document.createDocumentFragment();
+                    // const firstTempContainer = document.createElement("div");
+                    // const secondTempContainer = document.createElement("div");
+                    //
+                    // parentFragment.appendChild(firstTempContainer);
+                    // firstTempContainer.appendChild(secondTempContainer);
 
-                // append the fragment on to the parent
-                parentElement.append(newFragment);
+                    template[i].subRoot = true; // this is for cutting the dom tree only at the bottom.
+
+                    apply(template[i], parentElement, data);
+
+                    // const subRootChildren = secondTempContainer.children;
+                    // for (let i = 0; i < subRootChildren.length; i++) {
+                    //     parentFragment.appendChild(subRootChildren[i]);
+                    // }
+                    // parentFragment.removeChild(firstTempContainer);
+                    //
+                    // // append the fragment on to the parent
+                    // parentElement.appendChild(parentFragment);
+                }
             }
         },
         addContent: function (parent, type, content, data) {
@@ -111,9 +127,12 @@ const templateEngine = (function () {
             let parentElements = [parent];
 
             // Check and prepare query
-            const newQuery = instruction.query;
-            if (newQuery != undefined && newQuery != "") {
-                query = newQuery;
+            let newQuery = instruction.query;
+            if (newQuery != undefined) {
+                newQuery = newQuery.trim();
+                if (newQuery != "") {
+                    query = newQuery;
+                }
             }
 
             // we found (new) data, lets flow it in the system.
@@ -125,7 +144,6 @@ const templateEngine = (function () {
             if (instruction) {
                 let content = instruction.content;
                 if (content != undefined && parent != undefined) {
-
                     if (query != undefined && query != "") {
                         const previousParent = parent.parentElement;
                         if (previousParent != undefined) {
@@ -133,11 +151,24 @@ const templateEngine = (function () {
                             // Using a tempolary attribute to use for the query selector. Which is used to support selections like this: `> tagName`. It is a hack!
                             parent.setAttribute("template-enige-temp", true);
 
-                            parentElements = previousParent.querySelectorAll("[template-enige-temp] " + query.trim());
+                            if (instruction.limit == undefined || instruction.limit > 1) {
+                                parentElements = previousParent.querySelectorAll("[template-enige-temp] " + query);
+                                if (parentElements != undefined && parentElements.length > instruction.limit) {
+                                    parentElements = Array.from(parentElements).slice(0, instruction.limit);
+                                }
+                            } else {
+                                const selection = previousParent.querySelector("[template-enige-temp] " + query);
+                                if (selection != undefined) {
+                                    parentElements = [selection];
+                                } else {
+                                    parentElements = null;
+                                }
+                            }
 
                             parent.removeAttribute("template-enige-temp");
 
-
+                        } else {
+                            console.error("No parent found for template engine. Section: querySelector. Query:", query);
                         }
                     }
                     if (parentElements != undefined && parentElements.length > 0) {
@@ -190,7 +221,6 @@ const templateEngine = (function () {
                         // these are the elements from the query all selection
                         for (let i = 0; i < parentElements.length; i++) {
                             const parentElement = parentElements[i];
-
                             // Make the new elements.
                             const newElementsWithData = templateEngine.addContent(parentElement, instruction.type, content, data);
 

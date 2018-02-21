@@ -4,10 +4,25 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 
+
+app.sections.template.add("grid-items-filters",
+    [
+        // for the filters
+        {
+            query: "#search-on-text span",
+            content: "[use-data]",
+            type: "text",
+            limit: 1
+        }
+    ]
+);
+
+
 app.sections.template.add("grid-items",
     [
         {
             query: "section:first-of-type",
+            limit: 1,
             content: function (data, parent) {
                 const elementsWithData = [];
                 for (var i = 0; i < data.length; i++) {
