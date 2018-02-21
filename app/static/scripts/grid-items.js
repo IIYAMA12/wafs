@@ -5,14 +5,13 @@ const gridItemsContainer = (function () {
             const filterInput = document.getElementById('filter-input');
             filterInput.addEventListener("keypress",((e) => {
                 const this_ = this;
-                setTimeout(function (){
+                setTimeout(function () { // Filter delay.
                     const value = filterInput.value;
                     this_.filter(value, "name");
-                });
+                }, 1000);
             }));
         },
         load (data) {
-
 
             // convert to array
             const dataToArray = Object.entries(data);
@@ -63,21 +62,27 @@ const gridItemsContainer = (function () {
                     }
                 }
 
-                value = value.trim();
+                value = value.trim().toLowerCase();
 
                 if (value != "") {
                     localStorageData = localStorageData.filter(function (d) {
                         const name = d.data.name;
 
                         if (name != undefined) {
-                            return name.toLowerCase().indexOf(value) > 0;
+                            return name.toLowerCase().indexOf(value) > -1;
                         }
                         return false;
                     });
                 }
-
-                const template = app.sections.template.get("grid-items");
-                templateEngine.render(template, document.getElementById("startscreen"), localStorageData);
+                const templateFilters = app.sections.template.get("grid-items-filters");
+                const templateContent = app.sections.template.get("grid-items");
+                if (value != "") {
+                    templateEngine.render(templateFilters, document.querySelector("#startscreen form"), value);
+                    document.querySelector("#search-on-text").classList.remove("hidden");
+                } else {
+                    document.querySelector("#search-on-text").classList.add("hidden");
+                }
+                templateEngine.render(templateContent, document.getElementById("startscreen"), localStorageData);
             }
         },
         unload () {
