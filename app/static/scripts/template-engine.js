@@ -2,12 +2,19 @@ const templateEngine = (function () {
     const templateEngine = {
         render: function (template, parentElement, data) {
             if (template != undefined && template.length > 0) {
+
+                // make a new fragment
                 const newFragment = document.createDocumentFragment();
+
                 const apply = this.apply; // << optimisation
+
+                // Execute the apply function for every instruction
                 for (let i = 0; i < template.length; i++) {
                     template[i].subRoot = true; // this is for cutting the dom tree only at the bottom.
                     apply(template[i], newFragment, data);
                 }
+
+                // append the fragment on to the parent
                 parentElement.append(newFragment);
             }
         },
@@ -115,7 +122,6 @@ const templateEngine = (function () {
             }
 
 
-
             if (instruction) {
                 let content = instruction.content;
                 if (content != undefined && parent != undefined) {
@@ -126,7 +132,6 @@ const templateEngine = (function () {
 
                             // Using a tempolary attribute to use for the query selector. Which is used to support selections like this: `> tagName`. It is a hack!
                             parent.setAttribute("template-enige-temp", true);
-
 
                             parentElements = previousParent.querySelectorAll("[template-enige-temp] " + query.trim());
 
@@ -171,6 +176,7 @@ const templateEngine = (function () {
 
                         // get all children from the instruction
                         let instructionChildren = instruction.children;
+
                         // add .child support
                         if (instructionChildren == undefined && instruction.child != undefined) {
                             instructionChildren = [instruction.child];
@@ -184,8 +190,6 @@ const templateEngine = (function () {
                         // these are the elements from the query all selection
                         for (let i = 0; i < parentElements.length; i++) {
                             const parentElement = parentElements[i];
-
-
 
                             // Make the new elements.
                             const newElementsWithData = templateEngine.addContent(parentElement, instruction.type, content, data);
@@ -217,9 +221,9 @@ const templateEngine = (function () {
                         }
                     }
                 }
+                return true;
             }
-
-            return true;
+            return false;
         }
     };
 
