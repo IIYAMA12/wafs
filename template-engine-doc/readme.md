@@ -229,6 +229,36 @@ Queries that start with `combinators` are also supported:
 }
 ```
 
+#### Limit query results
+
+```HTML
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+```
+
+```JS
+[
+    {
+        query: "p",
+        content: "[use-data]",
+        type: "text",
+        data: "Text",
+        limit: 3
+    }
+]
+```
+Result
+```HTML
+<p>Text</p>
+<p>Text</p>
+<p>Text</p>
+<p></p>
+<p></p>
+```
+
 ### Functions
 Using functions makes creating content much more easy. This function will be called when the template is rendered.
 
