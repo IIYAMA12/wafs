@@ -21,7 +21,7 @@ const templateEngine = (function () {
 
                     template[i].subRoot = true; // this is for cutting the dom tree only at the bottom.
 
-                    apply(template[i], parentElement, data);
+                    apply(template[i], parentElement, data, i);
 
                     // const subRootChildren = secondTempContainer.children;
                     // for (let i = 0; i < subRootChildren.length; i++) {

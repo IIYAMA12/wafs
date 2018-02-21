@@ -230,6 +230,8 @@ Queries that start with `combinators` are also supported:
 ```
 
 #### Limit query results
+The result can be limited with the `limit` property. The value 3 will limit the amount of results to 3.
+* If not correctly defined, it will get all possible elements.
 
 ```HTML
 <p></p>

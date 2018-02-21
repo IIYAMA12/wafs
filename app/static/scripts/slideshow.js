@@ -29,27 +29,6 @@ const slideshowContainer = (function (datavisCanvas) {
             const earthGroup = this.canvas.select("g:nth-child(2)");
             const earth = earthGroup.select("g > image");
 
-            // convert to array
-            const dataToArray = Object.entries(data);
-
-            data = []; // clear the data and re-use
-
-            // merge sub objects in to single array
-            for (let i = 0; i < dataToArray.length; i++) {
-                const subItem = dataToArray[i];
-
-                const date = subItem[0];
-                const subItemData = subItem[1];
-
-                for (let j = 0; j < subItemData.length; j++) {
-                    data[data.length] = {
-                        date: date,
-                        data: subItemData[j]
-                    };
-                }
-            }
-
-
 
 
             asteroidGroup = asteroidGroup
@@ -298,6 +277,5 @@ const slideshowContainer = (function (datavisCanvas) {
         }
     };
 
-    slideshowContainer.init();
     return slideshowContainer;
 })(d3.select("#nasa-slideshow svg"));

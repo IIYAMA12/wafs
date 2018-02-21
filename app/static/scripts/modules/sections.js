@@ -145,6 +145,26 @@
                                             }
                                         }
                                         console.log("nearEarthObjects", nearEarthObjects);
+
+                                        const dataToArray = Object.entries(nearEarthObjects);
+
+                                        nearEarthObjects = []; // clear the data and re-use
+
+                                        // merge sub objects in to single array
+                                        for (let i = 0; i < dataToArray.length; i++) {
+                                            const subItem = dataToArray[i];
+
+                                            const date = subItem[0];
+                                            const subItemData = subItem[1];
+
+                                            for (let j = 0; j < subItemData.length; j++) {
+                                                nearEarthObjects[nearEarthObjects.length] = {
+                                                    date: date,
+                                                    data: subItemData[j]
+                                                };
+                                            }
+                                        }
+
                                         app.localData.set("api-nasa", nearEarthObjects, "JSON");
                                         gridItemsContainer.load(nearEarthObjects);
                                     }
@@ -184,16 +204,24 @@
                                     if (data != undefined) {
                                         let nearEarthObjects = data["near_earth_objects"];
 
-                                        for(let date in nearEarthObjects){
-                                            const asteroids = nearEarthObjects[date];
-                                            for (let i = 0; i < asteroids.length; i++) {
-                                                const asteroid = asteroids[i];
-                                                // remove one index level for the data at key close_approach_data.
-                                                const closeApproachData = asteroid["close_approach_data"][0];
-                                                asteroid["close_approach_data"] = closeApproachData;
+                                        const dataToArray = Object.entries(nearEarthObjects);
+
+                                        nearEarthObjects = []; // clear the data and re-use
+
+                                        // merge sub objects in to single array
+                                        for (let i = 0; i < dataToArray.length; i++) {
+                                            const subItem = dataToArray[i];
+
+                                            const date = subItem[0];
+                                            const subItemData = subItem[1];
+
+                                            for (let j = 0; j < subItemData.length; j++) {
+                                                nearEarthObjects[nearEarthObjects.length] = {
+                                                    date: date,
+                                                    data: subItemData[j]
+                                                };
                                             }
                                         }
-                                        console.log(nearEarthObjects);
                                         app.localData.set("api-nasa", nearEarthObjects, "JSON");
                                         slideshowContainer.load(nearEarthObjects);
                                     }

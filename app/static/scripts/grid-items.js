@@ -4,86 +4,151 @@ const gridItemsContainer = (function () {
         init() {
             const filterInput = document.getElementById('filter-input');
             filterInput.addEventListener("keypress",((e) => {
-                const this_ = this;
+                const self = this;
                 setTimeout(function () { // Filter delay.
                     const value = filterInput.value;
-                    this_.filter(value, "name");
+                    self.update.start();
                 }, 1000);
             }));
+
+            const rowData = app.api["api-nasa"].customFunctions.getRowData();
+            console.log(rowData);
+
+            let radioButtonIndex = 0;
+            templateEngine.render([
+                {
+                    content: function (data, parent) {
+
+                        data = data.map(function (d) {
+                            return {data: d};
+                        });
+
+                        return data;
+                    },
+                    type: "function",
+                    children: [
+                        {
+                            content: "input",
+                            type: "tag",
+                            child: {
+                                content: function (data, parent) {
+
+                                    parent.setAttribute("name", "sort-on");
+                                    parent.setAttribute("type", "radio");
+                                    parent.setAttribute("value", data.header);
+                                    parent.setAttribute("id", "sort-on-id:" + radioButtonIndex);
+
+                                },
+                                type: "function"
+                            }
+
+                        },
+                        {
+                            content: "label",
+                            type: "tag",
+                            children: [
+                                {
+                                    content: function (data, parent) {
+
+                                        parent.setAttribute("for", "sort-on-id:" + radioButtonIndex);
+
+                                        radioButtonIndex++;
+                                        return {data: data.header};
+                                    },
+                                    type: "function",
+                                    child: {
+                                        type: "text",
+                                        content: "[use-data]"
+                                    }
+                                },
+
+                            ]
+                        }
+                    ]
+                }
+            ], document.getElementById("sort-on-number"), rowData);
         },
         load (data) {
-
-            // convert to array
-            const dataToArray = Object.entries(data);
-
-            data = []; // clear the data and re-use
-
-            // merge sub objects in to single array
-            for (let i = 0; i < dataToArray.length; i++) {
-                const subItem = dataToArray[i];
-
-                const date = subItem[0];
-                const subItemData = subItem[1];
-
-                for (let j = 0; j < subItemData.length; j++) {
-                    data[data.length] = {
-                        date: date,
-                        data: subItemData[j]
-                    };
-                }
-            }
-            console.log(data);
-
             const template = app.sections.template.get("grid-items");
             templateEngine.render(template, document.getElementById("startscreen"), data);
             return true;
         },
-        filter (value, filterOn) {
-            let localStorageData = app.localData.get("api-nasa", "JSON");
+        update: {
+            data: {},
+            start () {
+                let data = app.localData.get("api-nasa", "JSON");
 
-            if (localStorageData != undefined) {
-                // convert to array
-                const dataToArray = Object.entries(localStorageData);
 
-                localStorageData = []; // clear the data and re-use
+                data = this.sort(data);
+                data = this.filter(data);
 
-                // merge sub objects in to single array
-                for (let i = 0; i < dataToArray.length; i++) {
-                    const subItem = dataToArray[i];
-
-                    const date = subItem[0];
-                    const subItemData = subItem[1];
-
-                    for (let j = 0; j < subItemData.length; j++) {
-                        localStorageData[localStorageData.length] = {
-                            date: date,
-                            data: subItemData[j]
-                        };
-                    }
-                }
-
-                value = value.trim().toLowerCase();
-
-                if (value != "") {
-                    localStorageData = localStorageData.filter(function (d) {
-                        const name = d.data.name;
-
-                        if (name != undefined) {
-                            return name.toLowerCase().indexOf(value) > -1;
-                        }
-                        return false;
-                    });
-                }
                 const templateFilters = app.sections.template.get("grid-items-filters");
                 const templateContent = app.sections.template.get("grid-items");
-                if (value != "") {
-                    templateEngine.render(templateFilters, document.querySelector("#startscreen form"), value);
+
+                if (this.data.searchText != "") {
+                    templateEngine.render(templateFilters, document.querySelector("#startscreen form"), this.data.searchText);
                     document.querySelector("#search-on-text").classList.remove("hidden");
                 } else {
                     document.querySelector("#search-on-text").classList.add("hidden");
                 }
-                templateEngine.render(templateContent, document.getElementById("startscreen"), localStorageData);
-            }
+                templateEngine.render(templateContent, document.getElementById("startscreen"), data);
+            },
+            sort (data) {
+                const sortFunctions = this.sortings;
+                for (let i = 0; i < sortFunctions.length; i++) {
+                    data = sortFunctions[i](data);
+                }
+                return data;
+            },
+            filter (data) {
+                const filterFunctions = this.filters;
+                for (let i = 0; i < filterFunctions.length; i++) {
+                    data = filterFunctions[i](data);
+                }
+                return data;
+            },
+            filters: [
+                function (data) {
+                    const filterInput = document.getElementById('filter-input');
+                    let value = filterInput.value;
+
+
+
+                    if (data != undefined) {
+
+                        value = value.trim().toLowerCase();
+
+                        if (value != "") {
+                            data = data.filter(function (d) {
+                                const name = d.data.name;
+
+                                if (name != undefined) {
+                                    return name.toLowerCase().indexOf(value) > -1;
+                                }
+                                return false;
+                            });
+                        }
+                        gridItemsContainer.update.data.searchText = value;
+                    }
+                    return data;
+                }
+            ],
+            sortings: [
+                function (data) {
+                    console.log(data);
+                    const rowData = app.api["api-nasa"].customFunctions.getRowData();
+                    console.log("rowData", rowData);
+
+                    const indexesWithNumbersOnly = [];
+                    let rowDataWithNumbersOnly = rowData.filter(function (d, i) {
+                        indexesWithNumbersOnly[indexesWithNumbersOnly.length] = i;
+                        return d.type == "number";
+                    });
+                    console.log(rowDataWithNumbersOnly);
+
+                    return data;
+                }
+            ]
         },
         unload () {
             console.log("unloaded");
@@ -91,6 +156,6 @@ const gridItemsContainer = (function () {
         }
     };
 
-    gridItemsContainer.init();
+
     return gridItemsContainer;
 })();

@@ -58,7 +58,26 @@ The course repo for 'Web App From Scratch'
 
 ## Best practices
 
-// todo //
+
+### Prototype
+```js
+app.JSONHttpRequest = {
+    init () {
+        XMLHttpRequest.prototype.addEventListeners = function () {
+            this.addEventListener("load", app.JSONHttpRequest.loaded);
+            this.addEventListener("progress", app.JSONHttpRequest.progress);
+            this.addEventListener("error", app.JSONHttpRequest.error);
+            this.addEventListener("abort", app.JSONHttpRequest.abort);
+        };
+        XMLHttpRequest.prototype.removeEventListeners = function () {
+            this.addEventListener("load", app.JSONHttpRequest.loaded);
+            this.addEventListener("progress", app.JSONHttpRequest.progress);
+            this.addEventListener("error", app.JSONHttpRequest.error);
+            this.addEventListener("abort", app.JSONHttpRequest.abort);
+        };
+    }
+}
+```
 
 ## Web app
 
@@ -89,9 +108,8 @@ It is very important to make the body, html and as well as the pages full screen
 
 ```CSS
 body > *, body, html {
-    height: 100vh;
     width: 100vw;
-    overflow: hidden; /* to prevent problems with overflow content */
+    overflow-x: hidden; /* to prevent problems with overflow content */
 }
 ```
 To hide pages, a class might be handy.
@@ -189,6 +207,7 @@ The next step is to detect if the URL hash has been changed. We can use the even
         app.init();
     })();
 ```
+
 
 
 
