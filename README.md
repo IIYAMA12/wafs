@@ -60,8 +60,15 @@ The course repo for 'Web App From Scratch'
 ## APP flow
 
 ![Flow diagram](readme_content/flow-diagrams.png)
-![User flow diagram](readme_content/flow-diagrams-user.png)
+This flow shows most of the global methods that are used in the app. It also shows you the global flow. The flow starts with an event which triggers on hash change. This is in the app used to detect if the `virtual`/`fake` page has been changed. After that there is a chain of methods calling each other to: change section, get API data, render the page.
 
+Take a:
+```HTML
+<br><!-- not in your html of course -->
+```
+
+![User flow diagram](readme_content/flow-diagrams-user.png)
+The user flow gives more information about interaction, conditions and feedback/error handling.
 
 ## Best practices
 
