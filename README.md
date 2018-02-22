@@ -241,26 +241,59 @@ The next step is to detect if the URL hash has been changed. We can use the even
         \ \ / / / / / /
          \ / / / / / /
 */
+
+
 ```
+
+## CUSTOM Template engine
 [Template engine documentation](https://iiyama12.github.io/wafs/template-engine-doc)
+
+```CSS
+/*
+\ \ \ \ \ \ / / / / / / \ \
+ \ \ \ \ \ / / / / / /  \ \
+  \ \ \ \ / / / / / / \ \ \
+   \ \ \ / / / / / /\ \ \ \
+    \ \ / / / / / / \ \ \ \
+     \ / / / / / /  \ \ \ \
+*/
+
+```
 
 ## Function notations
 
 ### Function notations I am using by default
 ```JS
-    var functionName = function () {
-        // ...
-    }
-    function functionName () {
-        // ...        
-    }
+var functionName = function () {
+    // ...
+}
+function functionName () {
+    // ...        
+}
 ```
 
-###
+
+### Arrow function for addEventListener's
+Those are only used in addEventListener's to pass the correct `this` predefined variable in to the function scope. (I am not very happy about how they look like. Super UGLY!)
+```JS
+window.addEventListener("load", () => {
+    // ...
+});
+```
+
+### Shorthand function in objects
+Those are used to match my coding style with arrow functions. I am not very happy about those because the function declaration is much more clear.
 
 ```JS
+const exampleObject = {
+    functionName() {
 
+    }
+}
 ```
+
+
+
 
 [https://dmitripavlutin.com/6-ways-to-declare-javascript-functions/](Different function declarations)
 
