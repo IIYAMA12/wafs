@@ -27,7 +27,7 @@ The course repo for 'Web App From Scratch'
 ## Advantages and disadvantages of client-side single page web apps (lang NL)
 
 
-## Voor en nadelen single-page applicatie (SPA)
+## Advantages and disadvantages of single-page applications (SPA)
 
 ### Advantages
 * A single-page is very fast. After downloading all website code (HTML, CSS, JavaScript), only the NEW required data/content to be downloaded and send.
@@ -55,6 +55,13 @@ The course repo for 'Web App From Scratch'
 * Building of the website becomes more complex because the programmer has to use the framework client side or server side. Because of that it can last longer before the website is finished.
 
 [Bron: Single-page vs multiple-page application](https://medium.com/@NeotericEU/single-page-application-vs-multiple-page-application-2591588efe58)
+
+
+## APP flow
+
+![Flow diagram](readme_content/flow-diagrams.png)
+![User flow diagram](readme_content/flow-diagrams-user.png)
+
 
 ## Best practices
 
