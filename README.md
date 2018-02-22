@@ -74,6 +74,7 @@ The user flow gives more information about interaction, conditions and feedback/
 
 
 ### Prototype
+The prototype method seems to be very powerful. Unfortunately I am very new to this method and do not normally use it to achieve my work. It took some time figure out how I could use it to support my code, but here it is:
 ```js
 app.JSONHttpRequest = {
     init () {
@@ -92,6 +93,10 @@ app.JSONHttpRequest = {
     }
 }
 ```
+I used the prototype method to add and remove multiple addEventListener's.
+
+Extension readme:
+* [Experiment prototype](https://iiyama12.github.io/wafs/experimental_examples/prototype)
 
 ## Web app
 
@@ -246,8 +251,8 @@ The next step is to detect if the URL hash has been changed. We can use the even
 ```
 
 ## CUSTOM Template engine
-[Template engine documentation](https://iiyama12.github.io/wafs/template-engine-doc)
-
+[Template engine documentation](https://github.com/IIYAMA12/wafs/tree/master/template-engine-doc)
+DON'T even try to think about SKIPPING THIS!
 ```CSS
 /*
 \ \ \ \ \ \ / / / / / / \ \
@@ -298,10 +303,9 @@ const exampleObject = {
 [https://dmitripavlutin.com/6-ways-to-declare-javascript-functions/](Different function declarations)
 
 
-## Experiment examples
-* [Experiment prototype](https://iiyama12.github.io/wafs/experimental_examples/prototype)
-* [Experiment promise](https://iiyama12.github.io/wafs/experimental_examples/promise)
-* [Experiment classes and proxy](https://iiyama12.github.io/wafs/experimental_examples/classes_and_proxy)
+## Experiment examples (extension of this readme)
+* [Experiment promise (extension readme)](https://iiyama12.github.io/wafs/experimental_examples/promise)
+* [Experiment classes and proxy (extension readme)](https://iiyama12.github.io/wafs/experimental_examples/classes_and_proxy)
 
 ## Code review
 
