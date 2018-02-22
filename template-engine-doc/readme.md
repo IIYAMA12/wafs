@@ -154,7 +154,7 @@ templateEngine.render(template, startAtElement, data);
 ```
 
 
-I do recommended not to delete the template objects. Because when the exactly same template is applied again, all old elements will be `deleted automatic`. In this iteration this will be done by cutting down the subRoot elements on the bottom. Which means it will cut the first layer of elements, that are directly in the main array.
+I do recommended not to delete the template objects. Because when the exactly same template is applied again, all old elements will be `deleted automatic`. This will be done by cutting down the subRoot elements on the bottom. Which means it will cut the first layer of elements, that are directly in the main array.
 
 
 #### SubRoot
