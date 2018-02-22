@@ -12,16 +12,22 @@ const templateEngine = (function () {
 
                 // Execute the apply function for every instruction
                 for (let i = 0; i < template.length; i++) {
+
+
+                    template[i].subRoot = true; // this is for cutting the dom tree only at the bottom.
+
+                    apply(template[i], parentElement, data, i);
+
+                    /* - - - - - - - - - - - - - - - - - - - - - */
+                    /* experimental document fragment */
+                    // First attempt has been a failure
+                    /* - - - - - - - - - - - - - - - - - - - - - */
                     // const parentFragment = document.createDocumentFragment();
                     // const firstTempContainer = document.createElement("div");
                     // const secondTempContainer = document.createElement("div");
                     //
                     // parentFragment.appendChild(firstTempContainer);
                     // firstTempContainer.appendChild(secondTempContainer);
-
-                    template[i].subRoot = true; // this is for cutting the dom tree only at the bottom.
-
-                    apply(template[i], parentElement, data, i);
 
                     // const subRootChildren = secondTempContainer.children;
                     // for (let i = 0; i < subRootChildren.length; i++) {
@@ -31,6 +37,7 @@ const templateEngine = (function () {
                     //
                     // // append the fragment on to the parent
                     // parentElement.appendChild(parentFragment);
+                    /* - - - - - - - - - - - - - - - - - - - - - */
                 }
             }
         },

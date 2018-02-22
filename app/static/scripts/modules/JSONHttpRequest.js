@@ -1,4 +1,3 @@
-
 (function () {
     app.JSONHttpRequest = {
         init () {
@@ -64,7 +63,7 @@
 
                 if (httpRequest != undefined) {
 
-                    httpRequest.promiseData = {}
+                    httpRequest.promiseData = {};
 
                     const httpRequestPromise = new Promise(function (resolve, reject) {
                         httpRequest.promiseData.resolve = resolve;
@@ -73,13 +72,18 @@
                     httpRequest.promiseData.promise = httpRequestPromise;
 
                     httpRequestPromise.then(function (rawData) {
+
                         httpRequest.customData.callBack(rawData);
 
                         // Because the httpRequest remains to exist, we should remove the listeners.
                         httpRequest.removeEventListeners();
-                    }).catch(function (result) { // Don't catch stupid fish...
-                        console.log(result);
 
+                    }).catch(function (errorMessageData) { // Don't catch stupid fish...
+                        console.log(errorMessageData[0], errorMessageData[1], httpRequest.customData.errorCallBack);
+                        if (httpRequest.customData.errorCallBack) {
+                            console.log(errorMessageData[1]);
+                            httpRequest.customData.errorCallBack(errorMessageData[1]);
+                        }
                         // Because the httpRequest remains to exist, we should remove the listeners.
                         httpRequest.removeEventListeners();
                     });
@@ -104,6 +108,11 @@
         // event functions
         loaded: (e) => {
             const source = e.target;
+            if (developmentStates.rejectJSONRequest) {
+                source.promiseData.reject(["Rejected by developmentStates", "This is a reject, faked by developmentStates."]);
+                return;
+            }
+
             const rawData = source.response;
             if (rawData != undefined) {
                 if (source.customData != undefined && source.customData.callBack != undefined) {
@@ -113,27 +122,29 @@
                     return;
                 }
             }
-            source.promiseData.reject("http request warning: The received the data is corrupted, from ID: " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
+            source.promiseData.reject([("http request warning: The received the data is corrupted, from ID: " + (source.customData.id != undefined ? source.customData.id : "<Undefined>")), "Information is unavailable."]);
         },
         error: (e) =>{
             const source = e.target;
+
             if (source.promiseData != undefined) {
-                source.promiseData.reject("http request error: Can't receive the data, from ID: " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
+                source.promiseData.reject([("http request error: Can't receive the data, from ID: " + (source.customData.id != undefined ? source.customData.id : "<Undefined>")), "Network error"]);
             }
         },
         abort: (e) => {
             const source = e.target;
+            console.log("abort");
             if (source.promiseData != undefined) {
-                source.promiseData.reject("http request abort: From ID " + (source.customData.id != undefined ? source.customData.id : "<Undefined>"));
+                console.log("reject error");
+                source.promiseData.reject([("http request abort: From ID " + (source.customData.id != undefined ? source.customData.id : "<Undefined>")), "Cancelled"]);
             }
         },
         progress: (e) => {
-
             if (e.lengthComputable) {
                 const percentComplete = e.loaded / e.total;
-                console.log("progress", percentComplete);
+
             } else {
-                console.log("no progress");
+
             }
         },
 

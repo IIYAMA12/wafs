@@ -81,7 +81,7 @@ app.sections.template.add("grid-items",
                             content: function (data) {
                                 if (data != undefined) {
 
-                                    data = app.api["api-nasa"].customFunctions.getRowData(data);
+                                    data = app.api["api-nasa"].getRowData(data);
 
                                     const rowElements = data.map( function (d) {
                                         const tableRow = document.createElement("tr");
@@ -132,3 +132,100 @@ app.sections.template.add("grid-items",
         }
     ]
 );
+
+(function () {
+    let radioButtonIndex = 0;
+    app.sections.template.add("grid-items-filter",
+        [
+            {
+                query: "div",
+                limit: 1,
+                content: function (data) {
+                    return {data: data};
+                },
+                type: "function",
+                children: [
+                    {
+                        content: "input",
+                        type: "tag",
+                        child: {
+                            content: function (data, parent) {
+                                parent.checked = true;
+                                parent.setAttribute("name", "sort-on");
+                                parent.setAttribute("type", "radio");
+                                parent.setAttribute("value", "none");
+                                parent.setAttribute("id", "sort-on-id:" + radioButtonIndex);
+                            },
+                            type: "function"
+                        }
+                    },
+                    {
+                        content: "label",
+                        type: "tag",
+                        child: {
+                            content: function (data, parent) {
+
+                                parent.setAttribute("for", "sort-on-id:" + radioButtonIndex);
+
+                                radioButtonIndex++;
+                                return {data: "None"};
+                            },
+                            type: "function",
+                            child: {
+                                type: "text",
+                                content: "[use-data]"
+                            }
+                        }
+                    },
+                    {
+                        content: function (data, parent) {
+
+                            data = data.map(function (d) {
+                                return {data: d};
+                            });
+
+                            return data;
+                        },
+                        type: "function",
+                        children: [
+                            {
+                                content: "input",
+                                type: "tag",
+                                child: {
+                                    content: function (data, parent) {
+                                        parent.setAttribute("name", "sort-on");
+                                        parent.setAttribute("type", "radio");
+                                        parent.setAttribute("value", data.header);
+                                        parent.setAttribute("id", "sort-on-id:" + radioButtonIndex);
+                                    },
+                                    type: "function"
+                                }
+                            },
+                            {
+                                content: "label",
+                                type: "tag",
+                                children: [
+                                    {
+                                        content: function (data, parent) {
+
+                                            parent.setAttribute("for", "sort-on-id:" + radioButtonIndex);
+
+                                            radioButtonIndex++;
+                                            return {data: data.header};
+                                        },
+                                        type: "function",
+                                        child: {
+                                            type: "text",
+                                            content: "[use-data]"
+                                        }
+                                    },
+
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    );
+})();

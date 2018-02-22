@@ -1,5 +1,3 @@
-
-
 (function () {
     // pages: Shows the page and decides the dynamic content.
     app.sections = {
@@ -13,6 +11,13 @@
 
             //                           //
             ///////////////////////////////
+
+            // attach the ID on the section data.
+            const data = this.data;
+
+            for (const sectionId in data) {
+                data[sectionId].id = sectionId;
+            }
         },
         toggle (route) {
             const sectionElements = document.querySelectorAll("body > *");
@@ -88,8 +93,10 @@
             },
             errorMessages: {
                 [404]: "Nothing here!"
-            }
+            },
         },
+
+
         // Data is not yet used, but will be used later on.
         sectionFunctions (sectionData, typeOfFunctions) {
 
@@ -119,62 +126,26 @@
         data: {
             ["startscreen"] : {
                 startFunctions: [
-                    function () {
-                        const localStorageData = app.localData.get("api-nasa", "JSON");
-
-                        if (localStorageData == undefined) {
-                            const request = app.JSONHttpRequest.setup("api-nasa");
-                            if (request != undefined) {
-
-                                app.JSONHttpRequest.open(request, "GET", "https://api.nasa.gov/neo/rest/v1/feed?api_key=1NnMgn9RYxKvz0o2FDqdQ3poB6vtGreh8oLahlBy", true);
-
-
-                                // attach callback
-                                request.customData.callBack = (rawData) => {
-                                    const data = JSON.parse(rawData);
-                                    if (data != undefined) {
-                                        let nearEarthObjects = data["near_earth_objects"];
-
-                                        for(let date in nearEarthObjects){
-                                            const asteroids = nearEarthObjects[date];
-                                            for (let i = 0; i < asteroids.length; i++) {
-                                                const asteroid = asteroids[i];
-                                                // remove one index level for the data at key close_approach_data.
-                                                const closeApproachData = asteroid["close_approach_data"][0];
-                                                asteroid["close_approach_data"] = closeApproachData;
-                                            }
-                                        }
-                                        console.log("nearEarthObjects", nearEarthObjects);
-
-                                        const dataToArray = Object.entries(nearEarthObjects);
-
-                                        nearEarthObjects = []; // clear the data and re-use
-
-                                        // merge sub objects in to single array
-                                        for (let i = 0; i < dataToArray.length; i++) {
-                                            const subItem = dataToArray[i];
-
-                                            const date = subItem[0];
-                                            const subItemData = subItem[1];
-
-                                            for (let j = 0; j < subItemData.length; j++) {
-                                                nearEarthObjects[nearEarthObjects.length] = {
-                                                    date: date,
-                                                    data: subItemData[j]
-                                                };
-                                            }
-                                        }
-
-                                        app.localData.set("api-nasa", nearEarthObjects, "JSON");
-                                        gridItemsContainer.load(nearEarthObjects);
-                                    }
+                    function (_, sectionData) {
+                        const errorCallBack = function (message) {
+                            const sectionElement = document.getElementById(sectionData.id);
+                            if (sectionElement != undefined) {
+                                sectionElement.classList.add("data-loaded");
+                                const errorMessageElement = sectionElement.getElementsByClassName("error-message")[0];
+                                if (errorMessageElement != undefined) {
+                                    errorMessageElement.textContent = message;
+                                    errorMessageElement.classList.remove("hidden");
                                 }
-
-                                app.JSONHttpRequest.send("api-nasa");
                             }
-                        } else {
-                            gridItemsContainer.load(localStorageData);
+                        };
+                        const sectionElement = document.getElementById(sectionData.id);
+                        if (sectionElement != undefined) {
+                            const errorMessageElement = sectionElement.getElementsByClassName("error-message")[0];
+                            if (errorMessageElement) {
+                                errorMessageElement.classList.add("hidden");
+                            }
                         }
+                        app.api["api-nasa"].requestData(gridItemsContainer.load, errorCallBack);
                     }
                 ],
                 endFunctions: [
@@ -187,52 +158,30 @@
 
             },
             ["nasa-slideshow"] : {
-
                 startFunctions: [
                     function (_, sectionData) {
-                        const localStorageData = app.localData.get("api-nasa", "JSON");
-                        if (localStorageData == undefined) {
-                            const request = app.JSONHttpRequest.setup("api-nasa");
-                            if (request != undefined) {
 
-                                app.JSONHttpRequest.open(request, "GET", "https://api.nasa.gov/neo/rest/v1/feed?api_key=1NnMgn9RYxKvz0o2FDqdQ3poB6vtGreh8oLahlBy", true);
+                        const errorCallBack = function (message) {
 
-
-                                // attach callback
-                                request.customData.callBack = (rawData) => {
-                                    const data = JSON.parse(rawData);
-                                    if (data != undefined) {
-                                        let nearEarthObjects = data["near_earth_objects"];
-
-                                        const dataToArray = Object.entries(nearEarthObjects);
-
-                                        nearEarthObjects = []; // clear the data and re-use
-
-                                        // merge sub objects in to single array
-                                        for (let i = 0; i < dataToArray.length; i++) {
-                                            const subItem = dataToArray[i];
-
-                                            const date = subItem[0];
-                                            const subItemData = subItem[1];
-
-                                            for (let j = 0; j < subItemData.length; j++) {
-                                                nearEarthObjects[nearEarthObjects.length] = {
-                                                    date: date,
-                                                    data: subItemData[j]
-                                                };
-                                            }
-                                        }
-                                        app.localData.set("api-nasa", nearEarthObjects, "JSON");
-                                        slideshowContainer.load(nearEarthObjects);
-                                    }
-                                };
-
-                                app.JSONHttpRequest.send("api-nasa");
+                            const sectionElement = document.getElementById(sectionData.id);
+                            if (sectionElement != undefined) {
+                                sectionElement.classList.add("data-loaded");
+                                const errorMessageElement = sectionElement.getElementsByClassName("error-message")[0];
+                                if (errorMessageElement != undefined) {
+                                    errorMessageElement.textContent = message;
+                                    errorMessageElement.classList.remove("hidden");
+                                }
                             }
-                        } else {
-
-                            slideshowContainer.load(localStorageData);
+                        };
+                        const sectionElement = document.getElementById(sectionData.id);
+                        if (sectionElement != undefined) {
+                            const errorMessageElement = sectionElement.getElementsByClassName("error-message")[0];
+                            if (errorMessageElement) {
+                                errorMessageElement.classList.add("hidden");
+                            }
                         }
+
+                        app.api["api-nasa"].requestData(slideshowContainer.load, errorCallBack);
                     }
                 ],
                 endFunctions: [

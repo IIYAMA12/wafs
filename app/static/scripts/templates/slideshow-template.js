@@ -4,6 +4,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 
+
 app.sections.template.add("slideshow",
     [
         {
@@ -33,7 +34,7 @@ app.sections.template.add("slideshow",
             query: "table tbody",
             content: function (data) {
                 if (data != undefined) {
-                    data = app.api["api-nasa"].customFunctions.getRowData(data);
+                    data = app.api["api-nasa"].getRowData(data);
 
                     const rowElements = data.map( function (d) {
                         const tableRow = document.createElement("tr");
@@ -56,7 +57,8 @@ app.sections.template.add("slideshow",
                 {
                     content: function (data) {
                         const tableHeader = document.createElement("th");
-                        return {element: tableHeader, data: data.headerText};
+                        console.log(data);
+                        return {element: tableHeader, data: data.header};
                     },
                     type: "function",
                     child: {
