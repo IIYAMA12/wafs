@@ -1,6 +1,6 @@
 const developmentStates = {
 
-	dataUnavailable: true, // before Promise (warning)
+	dataUnavailable: false, // before Promise (warning)
 
 	rejectJSONRequest: false,
 

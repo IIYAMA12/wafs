@@ -31,13 +31,14 @@ const gridItemsContainer = (function () {
             for (var i = 0; i < defaultRowData.length; i++) {
                 validHeaders[defaultRowData[i].header] = true;
             }
-            
+
             this.update.data.validHeaders = validHeaders;
         },
 
         load (data) {
-            const template = app.sections.template.get("grid-items");
-            templateEngine.render(template, document.getElementById("startscreen"), data);
+            // const template = app.sections.template.get("grid-items");
+            // templateEngine.render(template, document.getElementById("startscreen"), data);
+            gridItemsContainer.update.start(data);
 
             // tell the css that the data has been loaded.
             document.getElementById("startscreen").classList.add("data-loaded");
@@ -80,14 +81,17 @@ const gridItemsContainer = (function () {
                 }
             },
             data: {},
-            start () {
+            start (data) {
 
                 // development state
                 if (developmentStates.dataUnavailable) {
                     return;
                 }
 
-                let data = app.localData.get("api-nasa", "JSON");
+                if (data == undefined) {
+                    data = app.localData.get("api-nasa", "JSON");
+                }
+
                 if (data != undefined) {
                     // A ONE layer copy: https://stackoverflow.com/questions/7486085/copying-array-by-value-in-javascript
                     data = data.slice();
@@ -150,6 +154,26 @@ const gridItemsContainer = (function () {
                 }
             ],
             sortings: [
+                // sort by default the first time on name
+                function (data, self) {
+                    console.log(data);
+                    data = data.sort(function(a, b) {
+
+                        const nameA = a.data.name.toUpperCase();
+                        const nameB = b.data.name.toUpperCase();
+
+                        if (nameA < nameB) {
+                            return -1;
+                        }
+                        if (nameA > nameB) {
+                            return 1;
+                        }
+
+                        // names must be equal
+                        return 0;
+                    });
+                    return data;
+                },
                 function (data, self) {
 
                     const selectedSortOrderItem = document.getElementById("sort-on-number").querySelector("[name=\"sort-order\"]:checked");

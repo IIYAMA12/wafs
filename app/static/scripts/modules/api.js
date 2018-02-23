@@ -10,12 +10,12 @@
 (function () {
     app.api = {
         ["api-nasa"]: {
-            
+
             /*
                 This method is used to get the API data.
             */
             requestData (requestCallback, errorCallBack) {
-
+                
                 // request the API from the localData (+ localStorage if no available)
                 const localStorageData = app.localData.get("api-nasa", "JSON");
 
