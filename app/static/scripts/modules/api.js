@@ -15,7 +15,7 @@
                 This method is used to get the API data.
             */
             requestData (requestCallback, errorCallBack) {
-                
+
                 // request the API from the localData (+ localStorage if no available)
                 const localStorageData = app.localData.get("api-nasa", "JSON");
 
@@ -54,23 +54,44 @@
 
                                 const dataToArray = Object.entries(nearEarthObjects);
 
-                                nearEarthObjects = []; // clear the data and re-use
 
+                                /* converted a for loop method to a reduce method */
+                                // nearEarthObjects = []; // clear the data and re-use
                                 // merge sub objects in to single array (filter and map doesn't help me with that...)
-                                for (let i = 0; i < dataToArray.length; i++) {
-                                    const subItem = dataToArray[i];
+                                // for (let i = 0; i < dataToArray.length; i++) {
+                                //     const subItem = dataToArray[i];
+                                //
+                                //     const date = subItem[0];
+                                //     const subItemData = subItem[1];
+                                //
+                                //     for (let j = 0; j < subItemData.length; j++) {
+                                //         const data = subItemData[j];
+                                //         nearEarthObjects[nearEarthObjects.length] = {
+                                //             date: date,
+                                //             data: data
+                                //         };
+                                //     }
+                                // }
 
+                                nearEarthObjects = dataToArray.reduce(function(newArray, subItem) {
                                     const date = subItem[0];
                                     const subItemData = subItem[1];
 
-                                    for (let j = 0; j < subItemData.length; j++) {
-                                        const data = subItemData[j];
-                                        nearEarthObjects[nearEarthObjects.length] = {
+                                    newArray = subItemData.reduce(function(newArray, data) {
+                                        newArray[newArray.length] = {
                                             date: date,
                                             data: data
                                         };
-                                    }
-                                }
+
+                                        return newArray;
+                                    }, newArray);
+
+                                    return newArray;
+                                  },
+                                  []
+                                );
+
+
 
                                 nearEarthObjects = app.utility.deepConvertToNumber(nearEarthObjects);
 

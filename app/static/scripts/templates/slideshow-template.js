@@ -57,7 +57,6 @@ app.sections.template.add("slideshow",
                 {
                     content: function (data) {
                         const tableHeader = document.createElement("th");
-                        console.log(data);
                         return {element: tableHeader, data: data.header};
                     },
                     type: "function",
