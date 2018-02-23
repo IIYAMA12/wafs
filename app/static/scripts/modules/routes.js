@@ -1,6 +1,10 @@
 (function () {
     // Takes care of the routes.
     app.routes = {
+        
+        /*
+            Initialize the routes.
+        */
         init () {
 
 
@@ -22,6 +26,9 @@
             });
         },
 
+        /*
+            A method used to get the current route.
+        */
         getCurrentRoute () {
             return location.href.split('#')[1];
         }

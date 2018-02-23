@@ -1,6 +1,19 @@
+// ---------------------------------------- //
+/*
+
+    This module is used to bark to the API.
+
+*/
+// ---------------------------------------- //
+
 (function () {
     app.JSONHttpRequest = {
+        
+        /*
+            Initialize the JSONHttpRequest
+        */
         init () {
+            // Attach and remove multiple addEventListeners on to a XMLHttpRequest, using a prototype method.
             XMLHttpRequest.prototype.addEventListeners = function () {
                 this.addEventListener("load", app.JSONHttpRequest.loaded);
                 this.addEventListener("progress", app.JSONHttpRequest.progress);
@@ -14,6 +27,10 @@
                 this.addEventListener("abort", app.JSONHttpRequest.abort);
             };
         },
+
+        /*
+            Setup a new JSONHttpRequest
+        */
         setup (id) {
 
 
@@ -37,7 +54,9 @@
             return httpRequest != undefined ? httpRequest : false;
         },
 
-        // open connection
+        /*
+            Open the JSONHttpRequest
+        */
         open () {
             let httpRequest, id, method, url, a_sync, user, password;
             // https://developer.mozilla.org/nl/docs/Web/JavaScript/Reference/Operatoren/Destructuring_assignment
@@ -51,26 +70,30 @@
             return httpRequest.open(method, url, a_sync, user, password);
         },
 
-        // send
+        /*
+            Send the JSONHttpRequest
+        */
         send () { // http request || id
             if (arguments[0] != undefined) {
                 // send it by direct http request or use an id to find it.
-                const httpRequest = typeof(arguments[0]) == "string"
-                    ?
-                        this.getLatestRequestById(arguments[0])
-                    :
-                        arguments[0];
+                const httpRequest = typeof(arguments[0]) == "string" ? this.getLatestRequestById(arguments[0]) : arguments[0];
 
                 if (httpRequest != undefined) {
 
+                    /*
+                        Prepare a new promise
+                    */
                     httpRequest.promiseData = {};
 
                     const httpRequestPromise = new Promise(function (resolve, reject) {
+                        // Store the resolve and reject functions/methods in to the httpRequest. This can be re-used at the event listeners.
                         httpRequest.promiseData.resolve = resolve;
                         httpRequest.promiseData.reject = reject;
                     });
+
                     httpRequest.promiseData.promise = httpRequestPromise;
 
+                    // Set the conditions of the promise
                     httpRequestPromise.then(function (rawData) {
 
                         httpRequest.customData.callBack(rawData);
@@ -79,9 +102,10 @@
                         httpRequest.removeEventListeners();
 
                     }).catch(function (errorMessageData) { // Don't catch stupid fish...
-                        console.log(errorMessageData[0], errorMessageData[1], httpRequest.customData.errorCallBack);
+
+                        console.log(errorMessageData[0]); // Important console information
+
                         if (httpRequest.customData.errorCallBack) {
-                            console.log(errorMessageData[1]);
                             httpRequest.customData.errorCallBack(errorMessageData[1]);
                         }
                         // Because the httpRequest remains to exist, we should remove the listeners.
@@ -93,6 +117,9 @@
             }
         },
 
+        /*
+            getRequestsById and getLatestRequestById are used easy access JSONHttpRequests
+        */
         getRequestsById (id) {
             return this.httpRequestsById[id] != undefined ? this.httpRequestsById[id] : false;
         },
@@ -105,9 +132,13 @@
             return false;
         },
 
-        // event functions
+        /*
+            event functions
+        */
         loaded: (e) => {
             const source = e.target;
+
+            // developmentStates
             if (developmentStates.rejectJSONRequest) {
                 source.promiseData.reject(["Rejected by developmentStates", "This is a reject, faked by developmentStates."]);
                 return;
@@ -148,7 +179,9 @@
             }
         },
 
-        // data
+        /*
+            This is where all JSONHttpRequests get saved.
+        */
         httpRequestsById: {},
     };
 })();

@@ -1,6 +1,10 @@
 (function () {
     // pages: Shows the page and decides the dynamic content.
     app.sections = {
+
+        /*
+            Initialize the sections.
+        */
         init () {
             // ///////////////////////// //
             // Experimental custom event //
@@ -19,24 +23,27 @@
                 data[sectionId].id = sectionId;
             }
         },
+
+        /*
+            This method is used to change the visible section.
+        */
         toggle (route) {
-            const sectionElements = document.querySelectorAll("body > *");
 
 
-
-
-
+            // Validate if there is data for this section.
             if (this.data[route]) {
                 const sectionElement = document.getElementById(route);
+
                 if (sectionElement != undefined) {
 
                     // hide all sections
+                    const sectionElements = document.querySelectorAll("body > *");
                     for (let index = 0; index < sectionElements.length; index++) {
                         const element = sectionElements[index];
                         element.classList.add("hidden");
                     }
 
-
+                    // Get previous section data if exist
                     const oldRouteData = this.oldRouteData;
 
                     // end functions
@@ -46,7 +53,7 @@
                     // start functions
                     this.sectionFunctions(this.data[route], "startFunctions");
 
-
+                    // Set previous section data
                     this.oldRouteData = {route: route, data: this.data[route], element: sectionElement};
 
                     sectionElement.classList.remove("hidden");
@@ -70,15 +77,25 @@
                     //                           //
                     ///////////////////////////////
 
-                    return true;
+                    return true; // Section is OK >>> Return
                 }
             }
 
+            /*
+                No data available for this section? Then the page doesn't exist.
+            */
             this.error.goToPage(404);
 
             return false;
         },
+
+        /*
+            This object is used to show page/section errors
+        */
         error: {
+            /*
+                This method is used to go to error page.
+            */
             goToPage(code) {
                 const sectionElements = document.querySelectorAll("body > *");
 
@@ -97,7 +114,9 @@
         },
 
 
-        // Data is not yet used, but will be used later on.
+        /*
+            This method is used to call attached section functions
+        */
         sectionFunctions (sectionData, typeOfFunctions) {
 
             const init = sectionData.init;
@@ -114,6 +133,10 @@
                 }
             }
         },
+
+        /*
+            This object is used to manage templates, for custom template engine.
+        */
         template: {
             collection: {},
             add (id, template) {
@@ -123,7 +146,13 @@
                 return this.collection[id];
             }
         },
+
+        /*
+            This object is used to contain section data. It is also used for section validation.
+            If the secion id isn't in the object below, then it doesn't exist in the app.
+        */
         data: {
+            // This is data for the secion `startscreen`
             ["startscreen"] : {
                 startFunctions: [
                     function (_, sectionData) {

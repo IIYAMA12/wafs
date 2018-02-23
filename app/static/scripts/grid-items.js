@@ -24,13 +24,14 @@ const gridItemsContainer = (function () {
                 this.update.startWithDelay();
             });
 
-            // get all valid data headers
+            // get all valid data headers and save them!
             const validHeaders = {};
 
             const defaultRowData = app.api["api-nasa"].getRowData();
             for (var i = 0; i < defaultRowData.length; i++) {
                 validHeaders[defaultRowData[i].header] = true;
             }
+            
             this.update.data.validHeaders = validHeaders;
         },
 

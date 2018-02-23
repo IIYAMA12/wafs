@@ -1,24 +1,40 @@
+// ---------------------------------------- //
+/*
+
+    This module is used to manage API data.
+
+*/
+// ---------------------------------------- //
+
+
 (function () {
     app.api = {
         ["api-nasa"]: {
+            
+            /*
+                This method is used to get the API data.
+            */
             requestData (requestCallback, errorCallBack) {
 
+                // request the API from the localData (+ localStorage if no available)
                 const localStorageData = app.localData.get("api-nasa", "JSON");
 
                 // development state
                 if (developmentStates.dataUnavailable) {
                     return;
                 }
-                console.log(localStorageData);
+
+                // No data found in either localData and localStorage?
                 if (localStorageData == undefined) {
+
+                    // Start preparing the API JSONHttpRequest
                     const request = app.JSONHttpRequest.setup("api-nasa");
 
                     if (request != undefined) {
 
                         app.JSONHttpRequest.open(request, "GET", "https://api.nasa.gov/neo/rest/v1/feed?api_key=1NnMgn9RYxKvz0o2FDqdQ3poB6vtGreh8oLahlBy", true);
 
-
-                        // attach callback
+                        // attach callback for success
                         request.customData.callBack = (rawData) => {
                             const data = JSON.parse(rawData);
                             if (data != undefined) {
@@ -40,7 +56,7 @@
 
                                 nearEarthObjects = []; // clear the data and re-use
 
-                                // merge sub objects in to single array
+                                // merge sub objects in to single array (filter and map doesn't help me with that...)
                                 for (let i = 0; i < dataToArray.length; i++) {
                                     const subItem = dataToArray[i];
 
@@ -49,8 +65,6 @@
 
                                     for (let j = 0; j < subItemData.length; j++) {
                                         const data = subItemData[j];
-                                        // this.getRowData(data);
-
                                         nearEarthObjects[nearEarthObjects.length] = {
                                             date: date,
                                             data: data
@@ -60,23 +74,32 @@
 
                                 nearEarthObjects = app.utility.deepConvertToNumber(nearEarthObjects);
 
+                                // save in to localData and localStorage
                                 app.localData.set("api-nasa", nearEarthObjects, "JSON");
+
+                                // data is available, pass it over to page management
                                 requestCallback(nearEarthObjects);
                             }
                         };
 
+                        // attach callback for error
                         request.customData.errorCallBack = errorCallBack;
 
-
+                        // Send the request
                         app.JSONHttpRequest.send("api-nasa");
 
 
                     }
                 } else {
-
+                    // data is available, pass it over to page management
                     requestCallback(localStorageData);
                 }
             },
+
+            /*
+                This method is used to receive the object `rowsStaticData`.
+                If data is passed in to it. It will automatically fill it in, like auto fill in on to a web form.
+            */
             getRowData (dataToMap) {
                 const rowsStaticData = [
                     {indexes:["absolute_magnitude_h"], header: "Absolute magnitude", type:"number"},
@@ -97,6 +120,7 @@
                     {indexes:["links", "self"], header: "Links", type: "link"},
                 ];
 
+                // find and add data from `dataToMap` on to `rowsStaticData`
                 const rowsData = rowsStaticData.map(function (d) {
                     const rowIndexes = d.indexes;
                     let value = "";
