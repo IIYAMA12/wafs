@@ -67,8 +67,11 @@ Take a:
 <br><!-- not in your html of course -->
 ```
 
-![User flow diagram](readme_content/flow-diagrams-user.png)
-The user flow gives more information about interaction, conditions and feedback/error handling.
+![User flow diagram: Hash change](readme_content/flow-diagrams-user.png)
+Information about hash change conditions and feedback/error handling.
+
+![User flow diagram: filter & sort](readme_content/flow-diagrams-filter-sort.png)
+Information about the filter and sort flow.
 
 ## Best practices
 
