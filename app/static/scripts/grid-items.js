@@ -92,7 +92,7 @@ const gridItemsContainer = (function () {
                 let data = app.localData.get("api-nasa", "JSON");
 
 
-                if (data != undefined) {
+                if (data != undefined && data) {
                     // A ONE layer copy: https://stackoverflow.com/questions/7486085/copying-array-by-value-in-javascript
                     data = data.slice();
 
