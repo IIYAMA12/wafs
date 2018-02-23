@@ -1,6 +1,9 @@
 # wafs
 The course repo for 'Web App From Scratch'
 
+This an experimental Single page web application. It is also one of my first attempts to build one.
+
+
 [Web app from scratch](https://iiyama12.github.io/wafs/app)
 
 ## Advantages and disadvantages of JavaScript libraries/frameworks (lang NL)
