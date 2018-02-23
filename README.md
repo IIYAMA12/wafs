@@ -300,7 +300,7 @@ const exampleObject = {
 
 
 
-[https://dmitripavlutin.com/6-ways-to-declare-javascript-functions/](Different function declarations)
+[Different function declarations](https://dmitripavlutin.com/6-ways-to-declare-javascript-functions/)
 
 
 ## Experiment examples (extension of this readme)
