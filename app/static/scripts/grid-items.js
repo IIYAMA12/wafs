@@ -89,7 +89,7 @@ const gridItemsContainer = (function () {
                 }
 
 
-                const data = app.localData.get("api-nasa", "JSON");
+                let data = app.localData.get("api-nasa", "JSON");
 
 
                 if (data != undefined) {
@@ -156,7 +156,6 @@ const gridItemsContainer = (function () {
             sortings: [
                 // sort by default the first time on name
                 function (data, self) {
-                    console.log(data);
                     data = data.sort(function(a, b) {
 
                         const nameA = a.data.name.toUpperCase();
