@@ -93,6 +93,7 @@ const gridItemsContainer = (function () {
 
 
                 if (data != undefined && data) {
+                    console.log("data?", data);
                     // A ONE layer copy: https://stackoverflow.com/questions/7486085/copying-array-by-value-in-javascript
                     data = data.slice();
 
