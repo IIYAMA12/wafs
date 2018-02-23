@@ -306,7 +306,7 @@ window.addEventListener("load", () => {
 ```
 
 ### Shorthand function in objects
-Those are used to match my coding style with arrow functions. I am not very happy about those because the function declaration is much more clear.
+Those are used to match my coding style with arrow functions. I am not very happy about those because functions with `function declaration` are much clearer.
 
 ```JS
 const exampleObject = {
