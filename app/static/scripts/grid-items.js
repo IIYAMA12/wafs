@@ -81,16 +81,16 @@ const gridItemsContainer = (function () {
                 }
             },
             data: {},
-            start (data) {
+            start () {
 
                 // development state
                 if (developmentStates.dataUnavailable) {
                     return;
                 }
 
-                if (data == undefined) {
-                    data = app.localData.get("api-nasa", "JSON");
-                }
+
+                const data = app.localData.get("api-nasa", "JSON");
+
 
                 if (data != undefined) {
                     // A ONE layer copy: https://stackoverflow.com/questions/7486085/copying-array-by-value-in-javascript
