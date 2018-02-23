@@ -1,5 +1,5 @@
 :root {
-    --main-color: #0032a0;
+    --main-color: #00468c;
 }
 
 button, a {
@@ -98,7 +98,7 @@ h2, h3, h4, h5 {
 }
 
 h1 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     line-height: 3rem;
     margin-left: 2rem;
 }
@@ -135,21 +135,32 @@ tr {
     background: white;
     padding: 1rem;
     border-radius: 0.3rem;
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
 }
 
 tr > * {
     min-height: 2rem;
     line-height: 2rem;
+    display: block;
 }
 
 tr th {
-    width: 50%;
+    min-width: 50%;
     font-weight: bold;
 }
 
 tr td {
-    width: 50%;
+    min-width: 50%;
     overflow: scroll;
+}
+
+@media (max-width: 40rem) {
+    tr {
+        flex-wrap: wrap;
+    }
+    tr > * {
+        min-width: 100% !important;
+    }
 }
 
 #page-error p {
@@ -171,6 +182,7 @@ tr td {
 
 #startscreen > section:first-of-type article {
     width: 35rem;
+    max-width: calc(100% - 3rem);
     flex-shrink: 1;
     flex-grow: 1;
     padding: 1rem;
@@ -178,6 +190,22 @@ tr td {
     margin-bottom: 1rem;
     background-color: #fafafa;
     border: 0.5px solid #f0f0f0;
+}
+
+#nasa-slideshow {
+    width: 35rem;
+    max-width: calc(100% - 2rem);
+    margin: auto;
+    background-color: #fafafa;
+    border: 0.5px solid #f0f0f0;
+}
+
+section, article, form {
+    box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
+}
+
+#startscreen {
+    box-shadow: none;
 }
 
 /* FRAME-BY-FRAME ANIMATIONS */
@@ -237,11 +265,34 @@ form fieldset:first-child {
     margin: 2rem 0;
 }
 
+#search-on-text {
+    margin-top: 0.5rem;
+    color: #3c3c3c;
+}
+
 #sort-on-number > div {
     display: grid;
-    grid-template-columns: 2rem minmax(50%, 20rem) 2rem minmax(50%, 20rem);
+    grid-template-columns: 2rem minmax(50%, 20rem);
     max-width: 40rem;
     margin-bottom: 1.5rem;
+}
+
+@media (min-width: 40rem) {
+    #sort-on-number > div {
+        grid-template-columns: 2rem calc(50% - 1rem) 2rem calc(50% - 1rem);
+    }
+}
+
+@media (min-width: 60rem) {
+    #sort-on-number > div {
+        grid-template-columns: 2rem calc(50% - 1rem) 2rem calc(50% - 1rem) 2rem calc(50% - 1rem);
+    }
+}
+
+@media (min-width: 80rem) {
+    #sort-on-number > div {
+        grid-template-columns: 2rem calc(50% - 1rem) 2rem calc(50% - 1rem) 2rem calc(50% - 1rem) 2rem calc(50% - 1rem);
+    }
 }
 
 #sort-on-number > div:first-of-type input {
