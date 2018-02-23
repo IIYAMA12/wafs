@@ -62,11 +62,11 @@ This an experimental Single page web application. It is also one of my first att
 
 ## APP flow
 
-### Flow diagram (v2)
+### Flow diagram (v2.0)
 ![Flow diagram](readme_content/flow-diagrams_v2.png)
 
 
-### Flow diagram (v1)
+### Flow diagram (v1.0)
 ![Flow diagram](readme_content/flow-diagrams.png)
 This flow shows most of the global methods that are used in the app. It also shows you the global flow. The flow starts with an event which triggers on hash change. This is in the app used to detect if the `virtual`/`fake` page has been changed. After that there is a chain of methods calling each other to: change section, get API data, render the page.
 
