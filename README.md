@@ -60,9 +60,9 @@ This an experimental Single page web application. It is also one of my first att
 [Bron: Single-page vs multiple-page application](https://medium.com/@NeotericEU/single-page-application-vs-multiple-page-application-2591588efe58)
 
 
-## APP flow
+## APP flow and structure
 
-## #Object methods diagram (v2.0)
+### Object methods diagram (v2.0)
 ![Flow diagram](readme_content/flow-diagrams_v2.png)
 
 
