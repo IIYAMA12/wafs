@@ -13,7 +13,7 @@ With basics, I mean really basics. Just let JavaScript generate different types 
 ### Building an element
 Creating a single section. Each object inside of the template should be considered as an instruction.
 * content: This is where you add your content which should matches the `type`.
-* type: There are 3 different types. `tag`, `text`, `html`, `function`. Each of them require different content.
+* type: There are 4 different types. `tag`, `text`, `html`, `function`. Each of them require different content.
 
 * tag: Datatype TEXT, a tagName.
 * text: Datatype TEXT, any text you want.
