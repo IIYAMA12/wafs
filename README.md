@@ -14,6 +14,7 @@ If you did visit this page during the development process, then please delete yo
 - [Advantages and disadvantages of JavaScript libraries/frameworks](#advantages-and-disadvantages-of-javascript-libraries-frameworks)
 - [APP flow and structure](#app-flow-and-structure)
 - [Prototype](#prototype)
+- [Filter, sort, map and reduce](#filter-sort-map-and-reduce)
 - [Web app](#web-app)
 - [Function notations](#function-notations)
 - [Code review](#code-review)
@@ -104,7 +105,7 @@ Information about the filter and sort flow.
 
 ### Prototype
 The prototype method seems to be very powerful. Unfortunately I am very new to this method and do not normally use it to achieve my work. It took some time figure out how I could use it to support my code, but here it is:
-```js
+```JS
 app.JSONHttpRequest = {
     init () {
         XMLHttpRequest.prototype.addEventListeners = function () {
@@ -124,8 +125,146 @@ app.JSONHttpRequest = {
 ```
 I used the prototype method to add and remove multiple addEventListener's.
 
-Extension readme:
-* [Experiment prototype](https://iiyama12.github.io/wafs/experimental_examples/prototype)
+* [Prototype (experimental)](https://github.com/IIYAMA12/wafs/tree/master/experimental_examples/prototype)
+
+## Filter, sort, map and reduce
+
+### Filter
+Filtering on keywords.
+
+``` JS
+value = value.trim().toLowerCase();
+
+if (value != "") {
+    data = data.filter(function (d) {
+        const name = d.data.name;
+
+        if (name != undefined) {
+            return name.toLowerCase().indexOf(value) > -1;
+        }
+        return false;
+    });
+}
+```
+
+### Sort
+Sorting values based on the first item type inside of the arrays.
+
+```JS
+let sortMethod;
+data = data.sort(function(a, b) {
+
+    const rowDataA = app.api["api-nasa"].getRowData(a);
+    const rowDataB = app.api["api-nasa"].getRowData(b);
+
+    let valueA = rowDataA.find(function (item) {
+        return item.header === inputValue;
+    }).value;
+    let valueB = rowDataB.find(function (item) {
+        return item.header === inputValue;
+    }).value;
+
+    // decide which sort method we are going to use based on the first item.
+    if (sortMethod == undefined) {
+        if (!isNaN(Number(valueA))) {
+            if (!isNaN(Number(valueB))) {
+                sortMethod = "number";
+            }
+        } else if (typeof(valueA) == "string") {
+            if (typeof(valueB) == "string") {
+                sortMethod = "string";
+            }
+        } else if (typeof(valueA) == "boolean") {
+            if (typeof(valueB) == "boolean") {
+                sortMethod = "boolean";
+            }
+        }
+        if (sortMethod == undefined) {
+            sortMethod = "unkown";
+        }
+    }
+
+    // sorting behaviours
+    if (sortMethod == "string") {
+        valueA = valueA.toUpperCase();
+        valueB = valueB.toUpperCase();
+
+        if (valueA < valueB) {
+            return -1;
+        }
+        if (valueA > valueB) {
+            return 1;
+        }
+
+        // names must be equal
+        return 0;
+    } else if (sortMethod == "number") {
+        valueA = Number(valueA),
+            valueB = Number(valueB);
+        return sortOrder == "down" ? valueA > valueB : valueA < valueB;
+    } else if (sortMethod == "boolean") {
+        // sort by boolean: https://stackoverflow.com/questions/17387435/javascript-sort-array-of-objects-by-a-boolean-property
+        return sortOrder == "down" ? ((valueA === valueB) ? 0 : valueA ? -1 : 1) : ((valueA === valueB) ? 0 : !valueA ? -1 : 1);
+    }
+
+    return true;
+});
+```
+
+### Map
+Creating an array with the `absolute magnitude` values. The d3.max function is used to get highest value from this array.
+```JS
+const maxAbsolute_magnitude_h = d3.max(data.map(function (d) {
+    return d.data.absolute_magnitude_h;
+}));
+```
+
+### Reduce
+In the code below has been converted from using loops, to the reduce method.
+
+From: (Not reduce method used)
+```JS
+const nearEarthObjects = [];
+
+for (let i = 0; i < dataToArray.length; i++) {
+    const subItem = dataToArray[i];
+
+    const date = subItem[0];
+    const subItemData = subItem[1];
+
+    for (let j = 0; j < subItemData.length; j++) {
+        const data = subItemData[j];
+        nearEarthObjects[nearEarthObjects.length] = {
+            date: date,
+            data: data
+        };
+    }
+}
+```
+
+Updated to:
+```JS
+const nearEarthObjects = dataToArray.reduce(function(newArray, subItem) {
+    const date = subItem[0];
+    const subItemData = subItem[1];
+
+    newArray = subItemData.reduce(function(newArray, data) {
+        newArray[newArray.length] = {
+            date: date,
+            data: data
+        };
+
+        return newArray;
+    }, newArray);
+
+    return newArray;
+  },
+  []
+);
+```
+
+
+
 
 ## Web app
 
