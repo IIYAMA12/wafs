@@ -153,7 +153,6 @@ const slideshowContainer = (function (datavisCanvas) {
                 const contentScale = 0.7;
 
                 const maxAbsolute_magnitude_h = d3.max(data.map(function (d) {
-
                     return d.data.absolute_magnitude_h;
                 }));
 

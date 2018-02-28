@@ -134,7 +134,6 @@ const gridItemsContainer = (function () {
                     const filterInput = document.getElementById('filter-input');
                     let value = filterInput.value;
 
-
                     if (data != undefined) {
 
                         value = value.trim().toLowerCase();
