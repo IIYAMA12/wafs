@@ -78,33 +78,45 @@ If you did visit this page during the development process, then please delete yo
 
 ## APP flow and structure
 
-### Object methods diagram (v2.0)
-![Flow diagram](readme_content/flow-diagrams_v2.png)
+### Object methods (v2.0)
 
 <details>
-    <summary>Flow diagram (click to open)</summary>
-    <h2>Flow diagram</h2>
-    <a href="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams.png"><img alt="Flow diagram" src="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams.png"></a>
+    <summary>Flow diagram (v2.0) <strong>(click to open)</strong></summary>
+    <a href="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams_v2.png"><img alt="Flow diagram (v2.0)" src="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams_v2.png"></a>
 </details>
 
 
-### Object methods diagram with global flow (v1.0)
-![Flow diagram](readme_content/flow-diagrams.png)
+### Object methods with global flow (v1.0)
 This flow shows most of the global methods that are used in the app. It also shows you the global flow. The flow starts with an event which triggers on hash change. This is in the app used to detect if the `virtual`/`fake` page has been changed. After that there is a chain of methods calling each other to: change section, get API data, render the page.
+
+<details>
+    <summary>Flow diagram (v1.0) <strong>(click to open)</strong></summary>
+    <a href="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams.png"><img alt="Flow diagram (v1.0)" src="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams.png"></a>
+</details>
+
 
 Take a:
 ```HTML
 <br><!-- not in your html of course -->
 ```
 
-
 ### Hash change flow
-![User flow diagram: Hash change](readme_content/flow-diagrams-user.png)
 Information about hash change conditions and feedback/error handling.
 
+<details>
+    <summary>Hash change flow diagram <strong>(click to open)</strong></summary>
+    <a href="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams-user.png"><img alt="Hash change flow diagram" src="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams-user.png"></a>
+</details>
+
+
 ### Filter and sort flow
-![User flow diagram: filter & sort](readme_content/flow-diagrams-filter-sort.png)
 Information about the filter and sort flow.
+
+<details>
+    <summary>Filter and sort flow diagram <strong>(click to open)</strong></summary>
+    <a href="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams-filter-sort.png"><img alt="Filter and sort flow diagram" src="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams-filter-sort.png"></a>
+</details>
+
 
 ## Best practices
 
