@@ -62,7 +62,7 @@ If you did visit this page during the development process, then please delete yo
 * It is more vulnerable for memory leaks.
 
 
-### Advantages and disadvantages multiple-page application
+## Advantages and disadvantages multiple-page application
 
 
 ### Advantages
