@@ -18,9 +18,10 @@ If you did visit this page during the development process, then please delete yo
 - [Function notations](#function-notations)
 - [Code review](#code-review)
 - Sub content
-    - [Template engine documentation](https://github.com/IIYAMA12/wafs/tree/master/template-engine-doc)
-    - [Experiment promise (extension readme)](https://iiyama12.github.io/wafs/experimental_examples/promise)
-    - [Experiment classes and proxy (extension readme)](https://iiyama12.github.io/wafs/experimental_examples/classes_and_proxy)
+    - [Template engine documentation](https://github.com/IIYAMA12/wafs/tree/master/app/static/scripts/libraries/template-engine)
+    - [Promise (experimental)](https://github.com/IIYAMA12/wafs/tree/master/experimental_examples/promise)
+    - [Classes and proxy (experimental)](https://github.com/IIYAMA12/wafs/tree/master/experimental_examples/classes_and_proxy)
+    - [Prototype (experimental)](https://github.com/IIYAMA12/wafs/tree/master/experimental_examples/prototype)
 - [License](#license)
 
 ## Advantages and disadvantages of JavaScript libraries/frameworks

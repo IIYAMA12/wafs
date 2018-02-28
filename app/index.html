@@ -11,8 +11,12 @@
     <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:700" rel="stylesheet">
 </head>
 <body>
-
+    <!-- Libraries -->
     <script src="static/scripts/libraries/d3.min.js"></script>
+    <script src="static/scripts/libraries/template-engine/template-engine.js"></script>
+    <!--  -->
+
+    <!-- Sections -->
     <nav id="main-nav" class="hidden">
         <header><h1>Navigation</h1></header>
         <ul>
@@ -20,6 +24,7 @@
             <li><a href="#nasa-slideshow">NASA slideshow</a></li>
         </ul>
     </nav>
+
     <section id="startscreen">
         <header><h1>Startscreen</h1><a href="#main-nav">Navigation</a></header>
         <form>
@@ -47,6 +52,7 @@
             <p class="error-message hidden"></p>
         </section>
     </section>
+
     <section id="nasa-slideshow" class="hidden">
         <header><h1>NASA slideshow</h1><a href="#main-nav">Navigation</a></header>
 
@@ -64,26 +70,35 @@
         <div aria-label="loader">Loading...</div>
         <p class="error-message hidden"></p>
     </section>
+
     <section id="page-error" class="hidden">
         <header><h1>Leave NOW! ;@</h1><a href="#main-nav">Navigation</a></header>
         <p>Nothing here!</p>
     </section>
+    <!--  -->
 
 
-
-    <script src="static/scripts/template-engine.js"></script>
+    <!-- External objects -->
     <script src="static/scripts/slideshow.js"></script>
     <script src="static/scripts/grid-items.js"></script>
-    <script src="static/scripts/index.js"></script>
 
+    <!-- Startup -->
+    <script src="static/scripts/index.js"></script>
+    <!--  -->
+
+    <!-- Modules -->
     <script src="static/scripts/modules/routes.js"></script>
     <script src="static/scripts/modules/sections.js"></script>
     <script src="static/scripts/modules/JSONHttpRequest.js"></script>
     <script src="static/scripts/modules/localData.js"></script>
     <script src="static/scripts/modules/utility.js"></script>
     <script src="static/scripts/modules/api.js"></script>
+    <!--  -->
 
+    <!-- Templates -->
     <script src="static/scripts/templates/slideshow-template.js"></script>
     <script src="static/scripts/templates/items-template.js"></script>
+    <!--  -->
+
 </body>
 </html>
