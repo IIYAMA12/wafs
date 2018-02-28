@@ -81,8 +81,8 @@ If you did visit this page during the development process, then please delete yo
 ### Object methods (v2.0)
 
 <details>
-    <summary>Flow diagram (v2.0) <strong>(click to open)</strong></summary>
-    <a href="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams_v2.png"><img alt="Flow diagram (v2.0)" src="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams_v2.png"></a>
+    <summary>Object methods diagram (v2.0) <strong>(click to open)</strong></summary>
+    <a href="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams_v2.png"><img alt="Object methods diagram (v2.0)" src="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams_v2.png"></a>
 </details>
 
 
@@ -90,8 +90,8 @@ If you did visit this page during the development process, then please delete yo
 This flow shows most of the global methods that are used in the app. It also shows you the global flow. The flow starts with an event which triggers on hash change. This is in the app used to detect if the `virtual`/`fake` page has been changed. After that there is a chain of methods calling each other to: change section, get API data, render the page.
 
 <details>
-    <summary>Flow diagram (v1.0) <strong>(click to open)</strong></summary>
-    <a href="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams.png"><img alt="Flow diagram (v1.0)" src="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams.png"></a>
+    <summary>Object methods diagram with flow (v1.0) <strong>(click to open)</strong></summary>
+    <a href="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams.png"><img alt="Object methods diagram with flow (v1.0)" src="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams.png"></a>
 </details>
 
 
