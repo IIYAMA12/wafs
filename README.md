@@ -323,4 +323,4 @@ const exampleObject = {
 
 
 ## License
-[Copyright (c)](https://github.com/IIYAMA12/wafs/LICENSE.md) [Jorik van Essen](https://github.com/IIYAMA12)
+[Copyright (c)](https://github.com/IIYAMA12/wafs/blob/master/LICENSE.md) [Jorik van Essen](https://github.com/IIYAMA12)
