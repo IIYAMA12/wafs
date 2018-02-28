@@ -82,6 +82,12 @@ If you did visit this page during the development process, then please delete yo
 ![Flow diagram](readme_content/flow-diagrams_v2.png)
 
 
+<details>
+  <h2>test</h2>
+  <p>test content</p>
+</details>
+
+
 ### Object methods diagram with global flow (v1.0)
 ![Flow diagram](readme_content/flow-diagrams.png)
 This flow shows most of the global methods that are used in the app. It also shows you the global flow. The flow starts with an event which triggers on hash change. This is in the app used to detect if the `virtual`/`fake` page has been changed. After that there is a chain of methods calling each other to: change section, get API data, render the page.
