@@ -81,10 +81,10 @@ If you did visit this page during the development process, then please delete yo
 ### Object methods diagram (v2.0)
 ![Flow diagram](readme_content/flow-diagrams_v2.png)
 
-
 <details>
-  <h2>test</h2>
-  <p>test content</p>
+    <summary>Flow diagram (click to open)</summary>
+    <h2>Flow diagram</h2>
+    <img href="readme_content/flow-diagrams_v2.png">
 </details>
 
 
