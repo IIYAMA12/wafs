@@ -1,15 +1,19 @@
-<p>test1</p>
+
 # wafs
 The course repo for 'Web App From Scratch'
 
 This an experimental Single page web application. It is also one of my first attempts to build one.
 
-<p>test2</p>
 
 [Web app from scratch](https://iiyama12.github.io/wafs/app)
 
 ! Warning !
 If you did visit this page during the development process, then please delete your localStorage of this page. Else it might give you an error related to: `data.slice isn't a method`. The new data has a different structure, which is now an array instead of an object. The method slice doesn't exist for objects. (I noticed that this issue exist, after using another browser.)
+
+## Table of contents
+[Advantages and disadvantages of JavaScript libraries/frameworks](#advantages-and-disadvantages-of-javaScript-libraries/frameworks)
+
+
 
 
 ## Advantages and disadvantages of JavaScript libraries/frameworks
@@ -31,9 +35,6 @@ If you did visit this page during the development process, then please delete yo
 
 [Bron Vanilla Javascript leren voor het werken met frameworks](https://snipcart.com/blog/learn-vanilla-javascript-before-using-js-frameworks)
 
-
-
-## Advantages and disadvantages of client-side single page web apps
 
 
 ## Advantages and disadvantages of single-page applications (SPA)
