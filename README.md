@@ -11,11 +11,10 @@ This an experimental Single page web application. It is also one of my first att
 If you did visit this page during the development process, then please delete your localStorage of this page. Else it might give you an error related to: `data.slice isn't a method`. The new data has a different structure, which is now an array instead of an object. The method slice doesn't exist for objects. (I noticed that this issue exist, after using another browser.)
 
 ## Table of contents
-- [Advantages and disadvantages of JavaScript libraries/frameworks](#advantages-and-disadvantages-of-javaScript-librariesframeworks)
+- [Advantages and disadvantages of JavaScript libraries/frameworks](#advantages-and-disadvantages-of-javaScript-libraries-frameworks)
 - [APP flow and structure](#app-flow-and-structure)
 - [Prototype](#prototype)
 - [Web app](#web-app)
-- [CUSTOM Template engine](#custom-template-engine)
 - [Function notations](#function-notations)
 - [Code review](#code-review)
 - Sub content
