@@ -110,7 +110,7 @@ Information about the filter and sort flow.
 <details>
     <summary>Filter and sort flow diagram <strong>(click to open)</strong></summary>
     <a href="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams-filter-sort.png"><img alt="Filter and sort flow diagram" src="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams-filter-sort.png"></a>
-</details>
+</details><br><br><br>
 
 
 
