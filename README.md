@@ -84,7 +84,7 @@ If you did visit this page during the development process, then please delete yo
 <details>
     <summary>Flow diagram (click to open)</summary>
     <h2>Flow diagram</h2>
-    <img alt="Flow diagram" href="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams.png">
+    <a href="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams.png"><img alt="Flow diagram" href="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams.png"></a>
 </details>
 
 
