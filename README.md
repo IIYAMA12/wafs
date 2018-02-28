@@ -112,7 +112,10 @@ Information about the filter and sort flow.
     <a href="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams-filter-sort.png"><img alt="Filter and sort flow diagram" src="https://github.com/IIYAMA12/wafs/blob/master/readme_content/flow-diagrams-filter-sort.png"></a>
 </details>
 
-   
+
+
+
+
 
 Take a:
 ```HTML
