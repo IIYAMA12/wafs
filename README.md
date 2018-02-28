@@ -1,9 +1,10 @@
+<p>test1</p>
 # wafs
 The course repo for 'Web App From Scratch'
 
 This an experimental Single page web application. It is also one of my first attempts to build one.
 
-
+<p>test2</p>
 
 [Web app from scratch](https://iiyama12.github.io/wafs/app)
 
@@ -11,7 +12,7 @@ This an experimental Single page web application. It is also one of my first att
 If you did visit this page during the development process, then please delete your localStorage of this page. Else it might give you an error related to: `data.slice isn't a method`. The new data has a different structure, which is now an array instead of an object. The method slice doesn't exist for objects. (I noticed that this issue exist, after using another browser.)
 
 
-## Advantages and disadvantages of JavaScript libraries/frameworks (lang NL)
+## Advantages and disadvantages of JavaScript libraries/frameworks
 
 ### Advantages
 * Writing less code, which means it it will cost less time.
@@ -32,7 +33,7 @@ If you did visit this page during the development process, then please delete yo
 
 
 
-## Advantages and disadvantages of client-side single page web apps (lang NL)
+## Advantages and disadvantages of client-side single page web apps
 
 
 ## Advantages and disadvantages of single-page applications (SPA)
