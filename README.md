@@ -12,8 +12,8 @@ If you did visit this page during the development process, then please delete yo
 
 ## Table of contents
 [Advantages and disadvantages of JavaScript libraries/frameworks](#advantages-and-disadvantages-of-javaScript-libraries/frameworks)
-
-
+[APP flow and structure](#app-flow-and-structure)
+[APP flow and structure](#APP-flow-and-structure)
 
 
 ## Advantages and disadvantages of JavaScript libraries/frameworks
