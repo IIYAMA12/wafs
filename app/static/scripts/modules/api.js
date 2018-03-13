@@ -55,24 +55,6 @@
                                 const dataToArray = Object.entries(nearEarthObjects);
 
 
-                                /* converted a for loop method to a reduce method */
-                                // nearEarthObjects = []; // clear the data and re-use
-                                // merge sub objects in to single array (filter and map doesn't help me with that...)
-                                // for (let i = 0; i < dataToArray.length; i++) {
-                                //     const subItem = dataToArray[i];
-                                //
-                                //     const date = subItem[0];
-                                //     const subItemData = subItem[1];
-                                //
-                                //     for (let j = 0; j < subItemData.length; j++) {
-                                //         const data = subItemData[j];
-                                //         nearEarthObjects[nearEarthObjects.length] = {
-                                //             date: date,
-                                //             data: data
-                                //         };
-                                //     }
-                                // }
-
                                 nearEarthObjects = dataToArray.reduce(function(newArray, subItem) {
                                     const date = subItem[0];
                                     const subItemData = subItem[1];
